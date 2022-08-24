@@ -6,9 +6,9 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
     <changeSet id="1" author="breno.leal">
-        <createTable tableName="AUTOR">
-            <column name="ID_AUTOR" type="int" autoIncrement="true"><constraints primaryKey="true" nullable="false"></constraints></column>
-            <column name="NOME" type="varchar(255)"><constraints nullable="false"  unique="true" uniqueConstraintName="AUTOR_NOME_UNIQUE"></constraints></column>
+        <createTable tableName="ATOR">
+            <column name="ID_ATOR" type="int" autoIncrement="true"><constraints primaryKey="true" nullable="false"></constraints></column>
+            <column name="NOME" type="varchar(255)"><constraints nullable="false"  unique="true" uniqueConstraintName="ATOR_NOME_UNIQUE"></constraints></column>
         </createTable>
     </changeSet>
 
@@ -55,30 +55,34 @@
         </addColumn>
     </changeSet>
     
-    <changeSet id="7" author="breno.leal">
+    <changeSet id="7" author="breno.leal" runOnChange="true">
         <addColumn tableName="TITULO">
             <column name="ID_DIRETOR" type="int">
                 <constraints referencedColumnNames="ID_DIRETOR" referencedTableName="DIRETOR" foreignKeyName="TITULO_ID_DIRETOR_FK"></constraints>
             </column>
-            <column name="ID_CLASSE" type="int">
+            <column name="ID_CLASSIFICACAO" type="int">
                 <constraints referencedTableName="CLASSIFICACAO" referencedColumnNames="ID_CLASSIFICACAO" foreignKeyName="TITULO_ID_CLASSIFICACAO_FK"></constraints>
             </column>
         </addColumn>
     </changeSet>
     
     <changeSet id="8" author="breno.leal">
-        <createTable tableName="AUTOR_TITULO">
-            <column name="ID_AUTOR" type="int"></column>
+        <createTable tableName="ATOR_TITULO">
+            <column name="ID_ATOR" type="int"></column>
             <column name="ID_TITULO" type="int"></column>
         </createTable>
     </changeSet>
 
     <changeSet id="9" author="breno.leal">
-        <addForeignKeyConstraint baseTableName="AUTOR_TITULO" baseColumnNames="ID_AUTOR" constraintName="AUTOR_TITULO_ID_AUTOR_FK" referencedTableName="AUTOR"
-                                 referencedColumnNames="ID_AUTOR"></addForeignKeyConstraint>
+        <addForeignKeyConstraint baseTableName="ATOR_TITULO" baseColumnNames="ID_ATOR" constraintName="ATOR_TITULO_ID_ATOR_FK" referencedTableName="ATOR"
+                                 referencedColumnNames="ID_ATOR"></addForeignKeyConstraint>
 
-        <addForeignKeyConstraint baseTableName="AUTOR_TITULO" baseColumnNames="ID_TITULO" constraintName="AUTOR_TITULO_ID_TITULO_FK" referencedTableName="TITULO"
+        <addForeignKeyConstraint baseTableName="ATOR_TITULO" baseColumnNames="ID_TITULO" constraintName="ATOR_TITULO_ID_TITULO_FK" referencedTableName="TITULO"
                                  referencedColumnNames="ID_TITULO"></addForeignKeyConstraint>
+    </changeSet>
+
+    <changeSet id="10" author="breno.leal">
+        <addPrimaryKey tableName="ATOR_TITULO" columnNames="ID_ATOR,ID_TITULO"></addPrimaryKey>
     </changeSet>
 
 </databaseChangeLog>
