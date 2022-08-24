@@ -22,7 +22,7 @@
 
         <a href="javascript:;" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" class="p-5 fs-1 text-white position-absolute top-0 end-0 d-lg-none">&times;</a>
         
-        <router-link to="Ator" class="nav-link active">Ator</router-link>
+        <router-link to="/ator" class="nav-link active">Ator</router-link>
         
         <app-dropdown title="Ola mundo">
             <dropdown-item target="_blank" link="Ola">Item 1</dropdown-item>
