@@ -1,15 +1,15 @@
 <template>
-    <transition>
+    <!-- <transition>
         <div class="my-modal" id="modalAtorForm w-100 h-100" aria-hidden="true" aria-labelledby="modalAtorFormLabel" tabindex="-1" v-show="open">
             <div class="my-modal-inner">
-                <form class="modal-content">
+                <form class="modal-content" v-on:submit.prevent="createActor">
                     <div class="my-modal-header">
                         <legend>Inserir novo ator</legend>
                         <button type="button" class="btn-close" @click="$emit('close')"></button>
                     </div>
                     <div class="my-modal-body">
                         <div class="form-floating mb-3">
-                            <input type="text" name="nome" id="nome" class="form-control" placeholder="nome" required>
+                            <input type="text" name="nome" id="nome" class="form-control" v-model="actor" placeholder="nome" required>
                             <label for="nome" class="form-label">Nome</label>
                         </div>
                     </div>
@@ -20,14 +20,44 @@
                 </form>
             </div>
         </div>
-    </transition>
+    </transition> -->
+    <my-modal v-show="open">
+        <form v-on:submit.prevent="createActor">
+            <my-modal-header>
+                Inserir Ator
+                <button type="button" class="btn-close" @click="$emit('close')"></button>
+            </my-modal-header>
+            <my-modal-body>
+                <div class="form-floating mb-3">
+                    <input type="text" name="nome" id="nome" class="form-control" v-model="actor" placeholder="nome" required>
+                    <label for="nome" class="form-label">Nome</label>
+                </div>
+            </my-modal-body>
+            <my-modal-footer>
+                <button class="btn btn-outline-danger" type="button" @click="$emit('close')">Cancelar</button>
+                <button class="btn btn-primary" type="submit">Salvar</button>
+            </my-modal-footer>
+        </form>
+    </my-modal>
+
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
+import api from "@/services/api"
+import MyModal from '@/components/modal/modalComponent.vue';
+import MyModalHeader from '@/components/modal/modalHeader.vue';
+import MyModalBody from '@/components/modal/modalBody.vue';
+import MyModalFooter from '@/components/modal/modalFooter.vue';
 
 export default defineComponent({
     name:'AtorForm',
+    components:{
+    MyModalBody,
+    MyModalHeader,
+    MyModalFooter,
+    MyModal
+},
     props:{
         open:{
             type:Boolean,
@@ -35,7 +65,29 @@ export default defineComponent({
         }
     },
     setup() {
-     return {}   
+        const actor = ref("");
+        const isOpen = ref(false);
+        async function createActor(){
+            const res = await requestApi(actor.value);
+            if(res.status === 200){
+                return;
+            }
+            console.log("Erro");
+        }
+
+        function requestApi(data:string){
+            return api.post("/ator", data).then((response)=>{
+                return response.data;
+            }).catch((error)=>{
+                return (error.response.data || {success:false, message: error.message});
+            });
+        }
+
+        return {
+            actor,
+            createActor,
+            isOpen
+        }   
     },
 })
 </script>

@@ -7,7 +7,7 @@
     <div class="container-xxl">
 
     <router-link class="navbar-brand" to="/">
-        <img src="<?=__BASEPATH__?>img/brand.webp" alt="Página inicial" data-aos="fade-down"/>
+        <img src="../assets/img/brand.png" alt="Página inicial" data-aos="fade-down"/>
     </router-link>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Alternar navegação">
@@ -29,7 +29,6 @@
             <dropdown-item target="_blank" link="Ola">Item 1</dropdown-item>
             <dropdown-item target="_blank" link="Ola">Item 1</dropdown-item>
         </app-dropdown>
-        <AppDropdown />
 
 
         </div>
@@ -56,3 +55,63 @@ export default defineComponent({
     },
 })
 </script>
+
+<style>
+    #menu .nav-link { 
+    transition: 300ms all;
+    opacity: .7;
+    color: var(--flex-dark)}
+
+    #menu .nav-link:hover,
+    #menu .nav-link.active { opacity: 1 }
+
+    .navbar-toggler { 
+    border: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 100%;
+    padding: .75rem .5rem }
+
+    .navbar-toggler .navbar-toggler-icon { 
+    width: 100%;
+    display: block;
+    height: 4px;
+    border-radius: 4px;
+    background: var(--flex-primary) !important }
+
+    @media(max-width:1199.98px){
+        header .navbar-brand img {
+            max-width: 50vw;
+            max-height: calc(2.5rem + 1.75vw) }
+    }
+
+    @media(max-width:991.98px){
+    
+        header [class*="container"] { padding: 0 1rem  !important }
+
+        header .navbar-collapse { 
+            background: var(--flex-primary);
+            width: 100%;
+            position: fixed;
+            z-index: 1000000;
+            top: 0;
+            left: 0  }
+
+        header .navbar-nav {
+            justify-content: center;
+            width: 100%;
+            height: 100vh }  
+
+        header .nav-link { 
+            text-align: center;
+            padding: .75rem 3rem !important; 
+            width: 100%;
+            font-size: 120% }
+
+        header .nav-item .btn { font-size: 100% }
+
+    }
+</style>
