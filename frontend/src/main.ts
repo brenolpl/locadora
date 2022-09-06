@@ -6,14 +6,21 @@ import router from './router'
 
 import './assets/style.css'
 
-import AppDropdown from './components/dropdown/dropdownComponent.vue';
-import DropdownItem from './components/dropdown/dropdownItem.vue'
+import myComponents from './plugins/myComponents'
+
+// import AppDropdown from './components/dropdown/dropdownComponent.vue';
+// import ActionDropdown from './components/dropdown/actionDropdown.vue'
+// import DropdownItem from './components/dropdown/dropdownItem.vue'
+// import TrashIcon from './components/iconsComponents/trashFillComponent.vue'
 
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
-app.component("app-dropdown", AppDropdown)
-app.component("dropdown-item", DropdownItem)
+app.use(myComponents)
+// app.component("app-dropdown", AppDropdown)
+// app.component("action-dropdown", ActionDropdown)
+// app.component("dropdown-item", DropdownItem)
+// app.component("trash-icon", TrashIcon)
 
 app.mount('#app')

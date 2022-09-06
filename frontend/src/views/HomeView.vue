@@ -1,12 +1,12 @@
 <template>
-    <main id="hero">
+    <main id="hero p-0">
         <div id="carouselHero" class="carousel slide carousel-fade" data-bs-ride="true" data-aos="fade-down">
-            <div class="carousel-inner">
+            <div class="carousel-inner ratio-21x9">
                 <div class="carousel-item active">
                     <picture>
-                        <source srcset="../assets/img/hero.jpg" media="(min-width: 993px)">
+                        <source srcset="../assets/img/hero.png" media="(min-width: 993px)">
                         <source srcset="../assets/img/bg-medicina-preventiva-xs.jpg" media="(max-width: 992px)">
-                        <img src="../assets/img/hero.jpg" alt="..." class="position-relative start-50 translate-middle-x">
+                        <img src="../assets/img/hero.png" alt="..." class="position-relative start-50 translate-middle-x">
                     </picture>
                 </div>
             </div>

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;800&display=swap');
+
 html, body { height: 100% }
 
 body { overflow-x: hidden }
@@ -18,12 +20,11 @@ section,
 
 @import "scss/functions";
 
-@import "font.poppins.css";
 $font-family-base: "Poppins", Sans-serif;
 
-$primary: #009388; 
-$success: #00CF08;
-$dark: #00615A;
+$primary: #4BDCBF; 
+$secondary: #75163E;
+$dark: #18465D;
 
 $btn-padding-x: 2rem;
 $btn-padding-y: 1rem;
@@ -58,25 +59,25 @@ $colors: map-remove($colors, "blue", "indigo", "purple", "pink", "red", "orange"
 //@import "scss/tables";
 @import "scss/forms";
 @import "scss/buttons";
-// @import "scss/transitions";
-//@import "scss/dropdown";
-//@import "scss/button-group";
-// @import "scss/nav";
-// @import "scss/navbar";
-// @import "scss/card";
+@import "scss/transitions";
+@import "scss/dropdown";
+@import "scss/button-group";
+@import "scss/nav";
+@import "scss/navbar";
+@import "scss/card";
 // @import "scss/accordion";
 // @import "scss/breadcrumb";
 // @import "scss/pagination";
 // @import "scss/badge";
 // @import "scss/alert";
 // @import "scss/progress";
-// @import "scss/list-group";
-// @import "scss/close";
+@import "scss/list-group";
+@import "scss/close";
 // @import "scss/toasts";
-// @import "scss/modal";
+@import "scss/modal";
 // @import "scss/tooltip";
 // @import "scss/popover";
-// @import "scss/carousel";
+@import "scss/carousel";
 // @import "scss/spinners";
 // @import "scss/offcanvas";
 @import "scss/placeholders";

@@ -29,12 +29,19 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style scoped>
     li{
     width: 100%;
     border-radius: 1.25rem;
     padding: 1rem 2rem;
     text-align: center;
+    }
+
+    div{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem !important;
     }
 
     a{
