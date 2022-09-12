@@ -1,6 +1,7 @@
 package com.locadoar.backend.domain;
 
 import com.sun.istack.NotNull;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,5 +23,19 @@ public class Ator {
     @Column(name = "NOME", nullable = false)
     private String nome;
 
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 }
