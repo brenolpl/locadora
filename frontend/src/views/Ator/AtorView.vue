@@ -21,7 +21,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import api from '@/services/api';
+import { defineComponent, onMounted, reactive, ref } from 'vue'
 import AtorForm from './AtorForm.vue';
 
 export default defineComponent({
@@ -29,27 +30,43 @@ export default defineComponent({
     components: {AtorForm},
     setup() {
         const isOpen = ref(false);
-        const actors = reactive([
-            {
-                nome:"Tom Cruise"
-            },
-            {
-                nome: "Will Smith"
-            },
-            {
-                nome: "Angelina Jolie"
-            },
-            {
-                nome: "Brad Pitt"
-            },
-            {
-                nome: "Leonardo DiCaprio"
-            },
-            {
-                nome: "Ben Afleck"
-            }
-        ])
-        return {isOpen, actors}
+        // const actors = reactive([
+        //     {
+        //         nome:"Tom Cruise"
+        //     },
+        //     {
+        //         nome: "Will Smith"
+        //     },
+        //     {
+        //         nome: "Angelina Jolie"
+        //     },
+        //     {
+        //         nome: "Brad Pitt"
+        //     },
+        //     {
+        //         nome: "Leonardo DiCaprio"
+        //     },
+        //     {
+        //         nome: "Ben Afleck"
+        //     }
+        // ])
+    const actors = ref([]);
+    function requestApi(){
+        return api.get("/ator/list").then((res) => {
+            return res.data;
+        }).catch((err) => {
+            return false;
+        });
+    }
+    async function getCategorias() {
+      const res = ref(await requestApi());
+      actors.value = res.value.data;
+    }
+
+    onMounted(getCategorias);
+    console.log(actors.value);
+
+    return {isOpen, actors}
     },
 })
 </script>

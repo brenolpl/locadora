@@ -1,7 +1,25 @@
+// import axios from "axios";
+
+// const api = axios.create({
+//     baseURL: "http://localhost:8080/api",
+// });
+
+// export default api;
+
 import axios from "axios";
 
-const api = axios.create({
+const config = {
     baseURL: "http://localhost:8080/api",
-});
+    headers: {
+        'Accept': 'application/json',
+        'Authorization': '',
+    },
+    proxy: {
+        host: 'localhost',
+        port: 8080
+      }
+}
 
-export default api;
+const api = axios.create(config);
+
+export default api
