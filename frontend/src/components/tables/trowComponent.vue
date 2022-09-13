@@ -3,11 +3,11 @@
         <slot></slot>
         <td>
             <action-dropdown>
-                <dropdown-item>
-                    <trash-icon />
+                <dropdown-item @click="deleteActor()">
+                    <trash-icon/>
                     Excluir
                 </dropdown-item>
-                <dropdown-item>
+                <dropdown-item @click="$emit('edit')">
                     <edit-icon />
                     Editar
                 </dropdown-item>
@@ -18,11 +18,38 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import api from '@/services/api';
+import type { AxiosError, AxiosResponse } from 'axios';
 
 export default defineComponent({
     name:'MyRow',
-    setup() {
-        return {}
+    props:{
+        id:{
+            type:Number,
+            required:true,
+        }
+    },
+    emits:['deleted', 'edit'],
+    setup(props, {emit}) {
+        
+        async function deleteActor(){
+            const res = await requestDeleteApi();
+            if(res.status === 200){
+                emit('deleted');
+                return;
+            }
+            console.log("Erro");
+        }
+
+        function requestDeleteApi(){
+            return api.delete("/ator/delete?id=" + props.id).then((response:AxiosResponse)=>{
+                return response;
+            }).catch((error)=>{
+                return (error.response.data || {success:false, message: error.message});
+            });
+        }
+
+        return {deleteActor}
     },
 })
 </script>

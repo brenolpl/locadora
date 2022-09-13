@@ -1,83 +1,113 @@
 <template>
-    <!-- <transition>
-        <div class="my-modal" id="modalAtorForm w-100 h-100" aria-hidden="true" aria-labelledby="modalAtorFormLabel" tabindex="-1" v-show="open">
-            <div class="my-modal-inner">
-                <form class="modal-content" v-on:submit.prevent="createActor">
-                    <div class="my-modal-header">
-                        <legend>Inserir novo ator</legend>
-                        <button type="button" class="btn-close" @click="$emit('close')"></button>
+    <transition>
+        <my-modal v-show="open">
+            <form v-on:submit.prevent="createActor">
+                <modal-header>
+                    Inserir Ator
+                    <button type="button" class="btn-close" @click="$emit('close')"></button>
+                </modal-header>
+                <modal-body>
+                    <div class="form-floating mb-3">
+                        <input type="text" name="nome" id="nome" class="form-control" v-model="actor.nome" placeholder="nome" required>
+                        <label for="nome" class="form-label">Nome</label>
                     </div>
-                    <div class="my-modal-body">
-                        <div class="form-floating mb-3">
-                            <input type="text" name="nome" id="nome" class="form-control" v-model="actor" placeholder="nome" required>
-                            <label for="nome" class="form-label">Nome</label>
-                        </div>
-                    </div>
-                    <div class="my-modal-footer">
-                        <button class="btn btn-outline-danger" type="button" @click="$emit('close')">Cancelar</button>
-                        <button class="btn btn-primary" type="submit">Salvar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </transition> -->
-    <my-modal v-show="open">
-        <form v-on:submit.prevent="createActor">
-            <my-modal-header>
-                Inserir Ator
-                <button type="button" class="btn-close" @click="$emit('close')"></button>
-            </my-modal-header>
-            <my-modal-body>
-                <div class="form-floating mb-3">
-                    <input type="text" name="nome" id="nome" class="form-control" v-model="actor" placeholder="nome" required>
-                    <label for="nome" class="form-label">Nome</label>
-                </div>
-            </my-modal-body>
-            <my-modal-footer>
-                <button class="btn btn-outline-danger" type="button" @click="$emit('close')">Cancelar</button>
-                <button class="btn btn-primary" type="submit">Salvar</button>
-            </my-modal-footer>
-        </form>
-    </my-modal>
+                </modal-body>
+                <modal-footer>
+                    <button class="btn btn-outline-danger" type="button" @click="$emit('close')">Cancelar</button>
+                    <button class="btn btn-primary" type="submit">Salvar</button>
+                </modal-footer>
+            </form>
+        </my-modal>
+    </transition>
 
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, toRef, toRefs, watch } from 'vue'
 import api from "@/services/api"
-import MyModal from '@/components/modal/modalComponent.vue';
-import MyModalHeader from '@/components/modal/modalHeader.vue';
-import MyModalBody from '@/components/modal/modalBody.vue';
-import MyModalFooter from '@/components/modal/modalFooter.vue';
+import type { AxiosResponse } from 'axios';
 
 export default defineComponent({
     name:'AtorForm',
-    components:{
-    MyModalBody,
-    MyModalHeader,
-    MyModalFooter,
-    MyModal
-},
     props:{
         open:{
             type:Boolean,
             required:true
+        },
+        editedActor:{
+            type:Number,
+            default:0
         }
     },
-    setup() {
-        const actor = ref("");
+    emits:['saved', 'close'],
+    setup(props,{emit}) {
+
         const isOpen = ref(false);
-        async function createActor(){
-            const res = await requestApi(actor.value);
+
+        // const editedActor = toRefs(props).editedActor;
+        // console.log("🚀 ~ file: AtorForm.vue ~ line 48 ~ setup ~ editedActor", editedActor.value)
+
+        const actor = ref({
+            nome:"",
+            id:0
+        });
+
+        const resetForm = () => {
+            actor.value = {
+                nome:"",
+                id:0
+            }
+        }
+
+        watch(()=>props.editedActor, (newVal) => {
+            findActor(newVal);
+        });
+
+        async function findActor(id:any){
+            const res = await requestFindApi(id);
             if(res.status === 200){
+                actor.value = res.data
                 return;
             }
             console.log("Erro");
         }
 
-        function requestApi(data:string){
-            return api.post("/ator", data).then((response)=>{
-                return response.data;
+        async function requestFindApi(id:any){
+            return api.get("/ator/" + id).then((response:AxiosResponse)=>{
+                return response;
+            }).catch((error)=>{
+                return (error.response.data || {success:false, message: error.message});
+            });
+        }
+
+        async function createActor(){
+            if(actor.value.nome.length == 0) return;
+
+            if(actor.value.id == 0){
+                const res = await requestCreateApi({nome:actor.value.nome});
+                if(res.status === 200){
+                    resetForm;
+                    emit('close');
+                    emit('saved');
+                    return;
+                }
+                console.log("Erro");
+            }
+            else{
+                const res = await requestCreateApi({id:actor.value.id,nome:actor.value.nome});
+                if(res.status === 200){
+                    resetForm;
+                    emit('close');
+                    emit('saved');
+                    return;
+                }
+                console.log("Erro");
+            }
+        }
+
+        async function requestCreateApi(data:string){
+            return api.post("/ator/save", data).then((response:AxiosResponse)=>{
+                return response;
             }).catch((error)=>{
                 return (error.response.data || {success:false, message: error.message});
             });

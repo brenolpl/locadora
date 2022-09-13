@@ -1,6 +1,6 @@
 <template>
     <li>
-        <div class="dropdown-item" @click="redirect">
+        <div class="dropdown-item">
             <slot></slot>
         </div>
     </li>

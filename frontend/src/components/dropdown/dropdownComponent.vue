@@ -10,9 +10,6 @@
         </a>
         <transition>
             <ul id="dropdownList" class="bg-white" v-show="isOpen">
-                <!-- <li><a class="dropdown-item" target="_blank" href="">Área do Médico</a></li>
-                <li><a class="dropdown-item" target="_blank" href="">Resultados de Exames</a></li>
-                <li><a class="dropdown-item" target="_blank" href="">Agendamentos de Exames</a></li> -->
                 <slot></slot>
             </ul>
         </transition>
@@ -31,19 +28,7 @@ export default defineComponent({
         }
     },
     setup(props) {
-        // const showDropdown =  (button) => {
-        //         console.log(button);
-        //         const icon = button.children[1];
-        //         const dropdown = document.getElementById(button.getAttribute("data-target"));
-        //         dropdown!.classList.toggle("show");
-        //         if(dropdown!.classList.contains("show")){
-        //             icon.style.transform = "rotate(-180deg)";
-        //         }
-        //         else{
-        //             icon.style.transform = "rotate(0deg)";
-        //         }
-        // }
-
+        
         const title = ref(props.title);
         const isOpen = ref(false);
         const toogle = () =>{ isOpen.value = !isOpen.value;}

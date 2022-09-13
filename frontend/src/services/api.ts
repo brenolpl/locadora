@@ -14,10 +14,6 @@ const config = {
         'Accept': 'application/json',
         'Authorization': '',
     },
-    proxy: {
-        host: 'localhost',
-        port: 8080
-      }
 }
 
 const api = axios.create(config);
