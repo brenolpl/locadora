@@ -11,7 +11,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/ator")
 public class AtorController extends BaseController<Ator, IAtorRepository>{
-
     @Autowired
     public AtorController(IAtorRepository repository) {
         super(Ator.class, repository);
