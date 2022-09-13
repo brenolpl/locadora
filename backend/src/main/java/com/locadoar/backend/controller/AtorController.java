@@ -11,28 +11,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/ator")
 @CrossOrigin( origins = "http://localhost:5173")
-public class AtorController {
+public class AtorController extends BaseController<Ator, IAtorRepository>{
 
     @Autowired
-    private IAtorRepository atorRepository;
-
-    @GetMapping("{id}")
-    public Optional<Ator> getById(@PathVariable Integer id) {
-        return atorRepository.findById(id);
-    }
-
-    @GetMapping("list")
-    public List<Ator> list() {
-        return atorRepository.findAll();
-    }
-
-    @PostMapping("save")
-    public Ator persist(@RequestBody Ator ator) {
-        return atorRepository.save(ator);
-    }
-
-    @DeleteMapping("delete")
-    public void delete(@RequestParam Integer id) {
-        atorRepository.deleteById(id);
+    public AtorController(IAtorRepository repository) {
+        super(Ator.class, repository);
     }
 }

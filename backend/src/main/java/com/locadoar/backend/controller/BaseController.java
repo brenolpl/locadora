@@ -1,0 +1,44 @@
+package com.locadoar.backend.controller;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+public abstract class BaseController<DOMAIN, REPOSITORY extends JpaRepository<DOMAIN, Integer>> {
+    private Class domainClass;
+    private REPOSITORY repository;
+
+    public BaseController(Class domainClass, REPOSITORY repository) {
+        this.domainClass = domainClass;
+        this.repository = repository;
+    }
+
+    @GetMapping("{id}")
+    public Optional<DOMAIN> getById(@PathVariable Integer id) {
+        return repository.findById(id);
+    }
+
+    @GetMapping("list")
+    public List<DOMAIN> list() {
+        return repository.findAll();
+    }
+
+    @PostMapping("save")
+    public DOMAIN persist(@RequestBody DOMAIN body) {
+        return repository.save(body);
+    }
+
+    @DeleteMapping("delete")
+    public void delete(@RequestParam Integer id) {
+        repository.deleteById(id);
+    }
+}
