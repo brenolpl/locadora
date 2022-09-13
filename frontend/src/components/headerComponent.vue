@@ -1,5 +1,5 @@
 <template>
-    <header class="position-relative shadow-sm top-0 w-100 py-2 py-md-3" style="z-index:4">
+    <header class="position-relative shadow-sm top-0 w-100 py-1" style="z-index:4">
 
 
     <nav class="navbar navbar-expand-lg flex-nowrap">

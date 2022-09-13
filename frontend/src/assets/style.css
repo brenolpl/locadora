@@ -12,7 +12,7 @@ body {
 
 .bg-gradient-primary {
   background: rgb(23,69,90);
-  background: linear-gradient(15deg, rgba(23,69,90,1) 39%, rgba(41,150,142,1) 100%) }
+  background-image: linear-gradient(to right top, #17455a, #07687d, #008e9b, #11b5b1, #4bdcbf); }
 
 .bg-gradient-secondary {
   background: rgb(117,22,62);
@@ -25,6 +25,23 @@ body {
   animation-duration: 15s;
   animation-iteration-count: infinite;
   animation-timing-function: linear 
+}
+
+.flex-text-underline{
+  display:flex;
+  flex-direction:column;
+  gap:.5rem;
+}
+
+.center.flex-text-underline{
+  align-items:center;
+}
+
+.flex-text-underline::after{
+  content:"";
+  width:80%;
+  background-color:currentColor;
+  height:5px;
 }
 
 .tooltip {
