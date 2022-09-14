@@ -1,7 +1,9 @@
 package com.locadoar.backend.domain;
 
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +15,8 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "DIRETOR")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Diretor {
 
     @Id

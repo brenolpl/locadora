@@ -1,7 +1,9 @@
 package com.locadoar.backend.domain;
 
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +17,8 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "CLASSIFICACAO")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Classificacao {
 
     @Id
@@ -33,4 +37,5 @@ public class Classificacao {
     @NotNull
     @Column(name = "PRAZO_DEVOLUCAO")
     private LocalDateTime prazoDevolucao;
+
 }

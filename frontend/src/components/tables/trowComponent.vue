@@ -27,6 +27,10 @@ export default defineComponent({
         id:{
             type:Number,
             required:true,
+        },
+        table:{
+            type:String,
+            required:true,
         }
     },
     emits:['deleted', 'edit'],
@@ -42,7 +46,8 @@ export default defineComponent({
         }
 
         function requestDeleteApi(){
-            return api.delete("/ator/delete?id=" + props.id).then((response:AxiosResponse)=>{
+            console.log("Ola Mundo" + props.table);
+            return api.delete("/"+ props.table +"/delete?id=" + props.id).then((response:AxiosResponse)=>{
                 return response;
             }).catch((error)=>{
                 return (error.response.data || {success:false, message: error.message});
