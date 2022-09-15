@@ -16,15 +16,14 @@
                 </tbody>
             </my-table>
         </div>
-        <AtorForm :open="isOpen" @close="isOpen = !isOpen" @saved="getActors" :editedActor="editActor"/>
+        <AtorForm :open="isOpen" @close="isOpen = !isOpen" @saved="refreshList" :editedId="actorId"/>
     </main>
 </template>
 
 <script lang="ts">
 
-// import api from '@/services/api';
 import useActors from '@/composables/ator';
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onMounted, ref, watch } from 'vue'
 import AtorForm from './AtorForm.vue';
 
 export default defineComponent({
@@ -34,10 +33,10 @@ export default defineComponent({
 
         const { actors, getActors, destroyActor } = useActors();
         const isOpen = ref(false);
-        const editActor = ref(0);
+        const actorId = ref(0);
 
         function showFormEdit(id:any){
-            editActor.value = id;
+            actorId.value = id;
             isOpen.value = true;
         }
 
@@ -47,9 +46,14 @@ export default defineComponent({
             await getActors();
         }
 
+        const refreshList = async () => {
+            isOpen.value = false;
+            getActors();
+        }
+
         onMounted(getActors);
 
-        return {isOpen, actors, getActors, deleteActor, editActor, showFormEdit}
+        return {isOpen, actors, getActors, refreshList, deleteActor, actorId, showFormEdit}
     },
 })
 </script>

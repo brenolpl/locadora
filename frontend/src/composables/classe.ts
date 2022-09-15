@@ -1,33 +1,33 @@
 import {ref} from 'vue'
 import api from "@/services/api";
-import Ator from '@/models/ator';
+import Classe from '@/models/classe';
 
-export default function useActors(){
+export default function useClasses(){
 
-    const path = "/ator/";
-    const actors = ref([]);
-    const actor = ref(new Ator());
+    const path = "/classificacao/";
+    const variables = ref([]);
+    const variable = ref(new Classe());
     const erros = ref('');
 
-    const getActors = async () => {
+    const getAll = async () => {
         const response = await api.get(path + "list")
-        actors.value = response.data;
+        variables.value = response.data;
     }
 
-    const getActor = async (id:any) => {
+    const getById = async (id:any) => {
         const response = await api.get(path + id );
-        actor.value = response.data;
+        variable.value = response.data;
     }
 
-    const destroyActor = async (id:any) => {
+    const destroy = async (id:any) => {
         const response = await api.delete(path + "delete?id=" + id);
     }
 
-    const saveActor = async (data:any) => {
+    const save = async (data:any) => {
         erros.value = '';
         try{
             await api.post(path + "save", data);
-            actor.value = new Ator();
+            variable.value = new Classe();
         } catch(e:any){
             if(e.response.status === 422){
                 for(const key in e.response.data.errors){
@@ -38,13 +38,13 @@ export default function useActors(){
     }
 
     return {
-        actors,
-        actor,
+        variables,
+        variable,
         erros,
-        getActors,
-        getActor,
-        destroyActor,
-        saveActor
+        getAll,
+        getById,
+        destroy,
+        save
     }
 
 }

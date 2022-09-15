@@ -1,14 +1,14 @@
 <template>
     <transition>
         <my-modal v-show="open">
-            <form v-on:submit.prevent="createDiretor">
+            <form v-on:submit.prevent="formSave">
                 <modal-header>
                     Inserir Diretor
                     <button type="button" class="btn-close" @click="$emit('close')"></button>
                 </modal-header>
                 <modal-body>
                     <div class="form-floating mb-3">
-                        <input type="text" name="nome" id="nome" class="form-control" v-model="diretor.nome" placeholder="nome" required>
+                        <input type="text" name="nome" id="nome" class="form-control" v-model="variable.nome" placeholder="nome" required>
                         <label for="nome" class="form-label">Nome</label>
                     </div>
                 </modal-body>
@@ -24,8 +24,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, toRef, toRefs, watch } from 'vue'
-import api from "@/services/api"
 import type { AxiosResponse } from 'axios';
+import useDiretor from '@/composables/diretor';
 
 export default defineComponent({
     name:'DiretorForm',
@@ -34,7 +34,7 @@ export default defineComponent({
             type:Boolean,
             required:true
         },
-        editedDiretor:{
+        editedId:{
             type:Number,
             default:0
         }
@@ -42,78 +42,23 @@ export default defineComponent({
     emits:['saved', 'close'],
     setup(props,{emit}) {
 
+        const { erros, save, getById, variable } = useDiretor();
+
         const isOpen = ref(false);
 
-        const diretor = ref({
-            nome:"",
-            id:0
+        const formSave = async () => {
+            await save(variable.value);
+            emit('saved');
+        }
+
+        watch(()=>props.editedId, (newVal) => {
+            getById(newVal);
         });
-
-        const resetForm = () => {
-            console.log("estive aqui")
-            diretor.value = {
-                nome:"",
-                id:0
-            }
-        }
-
-        watch(()=> props.editedDiretor, (newVal) => {
-            findDiretor(newVal);
-        });
-
-        async function findDiretor(id:any){
-            const res = await requestFindApi(id);
-            if(res.status === 200){
-                diretor.value = res.data
-                return;
-            }
-            console.log("Erro");
-        }
-
-        async function requestFindApi(id:any){
-            return api.get("/diretor/" + id).then((response:AxiosResponse)=>{
-                return response;
-            }).catch((error)=>{
-                return (error.response.data || {success:false, message: error.message});
-            });
-        }
-
-        async function createDiretor(){
-            if(diretor.value.nome.length == 0) return;
-
-            if(diretor.value.id == 0){
-                const res = await requestCreateApi({nome:diretor.value.nome});
-                if(res.status === 200){
-                    resetForm;
-                    emit('close');
-                    emit('saved');
-                    return;
-                }
-                console.log("Erro");
-            }
-            else{
-                const res = await requestCreateApi({id:diretor.value.id,nome:diretor.value.nome});
-                if(res.status === 200){
-                    resetForm;
-                    emit('close');
-                    emit('saved');
-                    return;
-                }
-                console.log("Erro");
-            }
-        }
-
-        async function requestCreateApi(data:string){
-            return api.post("/diretor/save", data).then((response:AxiosResponse)=>{
-                return response;
-            }).catch((error)=>{
-                return (error.response.data || {success:false, message: error.message});
-            });
-        }
 
         return {
-            diretor,
-            createDiretor,
+            variable,
+            erros,
+            formSave,
             isOpen
         }   
     },

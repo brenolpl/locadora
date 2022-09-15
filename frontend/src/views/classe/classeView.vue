@@ -12,7 +12,7 @@
                     <th class="col-sm-4">Devolução</th>
                 </my-thead>
                 <tbody>
-                    <my-tr v-for="(classe, i) in classes" :key="i" :id="classe.id" :table="'classe'" @deleted="getClass" @edit="showFormEdit(classe.id)">
+                    <my-tr v-for="(classe, i) in variables" :key="i" :id="classe.id" :table="'classe'" @delete="deleteElement(classe.id)" @edit="showFormEdit(classe.id)">
                         <td>{{classe.nome}}</td>
                         <td>R${{classe.valor}}</td>
                         <td>{{classe.prazoDevolucao}}</td>
@@ -20,49 +20,43 @@
                 </tbody>
             </my-table>
         </div>
-        <ClasseForm :open="isOpen" @close="isOpen = !isOpen" @saved="getClass" :editedClass="editClass"/>
+        <ClasseForm :open="isOpen" @close="isOpen = !isOpen" @saved="refreshList" :editedId="editedId"/>
     </main>
 </template>
 
 <script lang="ts">
-import api from '@/services/api';
 import { defineComponent, onMounted, ref } from 'vue'
 import ClasseForm from './classeForm.vue';
+import useClasses from '@/composables/classe';
 
 export default defineComponent({
     name:'ClasseView',
     components: { ClasseForm },
     setup() {
+
+        const { variables, getAll, destroy } = useClasses();
         const isOpen = ref(false);
-        const classes = ref([]);
-        const editClass = ref(0);
-    
-        async function requestApi(){
-            return api.get("/classificacao/list").then((res) => {
-                return res.data;
-            }).catch((err) => {
-                return false;
-            });
-        }
-        async function getClass() {
-            const res = ref(await requestApi());
-            classes.value = res.value;
-        }
+        const editedId = ref(0);
 
         function showFormEdit(id:any){
-            editClass.value = id;
+            editedId.value = id;
             isOpen.value = true;
         }
 
-        function formatarData(data){
-            const d = new Date(data);
-            var data = d.toLocaleDateString + d.toLocaleTimeString;
-            return data;
+        const deleteElement = async (id:any) => {
+            if(!window.confirm("Tem certeza que deseja excluir o ator?")) return;
+            await destroy(id);
+            await getAll();
         }
 
-        onMounted(getClass);
+        const refreshList = async () => {
+            isOpen.value = false;
+            getAll();
+        }
 
-        return {isOpen, classes, getClass, editClass, showFormEdit, formatarData}
+        onMounted(getAll);
+
+        return {isOpen, variables, getAll, refreshList, deleteElement, editedId, showFormEdit}
     },
 })
 </script>
