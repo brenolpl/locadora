@@ -1,9 +1,10 @@
-export default class Ator{
-    id:number;
+import Flex from "./flex";
+
+export default class Ator extends Flex{
     nome: string
 
     constructor() {
-        this.id = 0;
+        super("/ator/");
         this.nome = ""
     }
 

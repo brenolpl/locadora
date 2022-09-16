@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import AtorView from '@/views/Ator/AtorView.vue'
+import AtorView from '@/views/ator/AtorView.vue'
 import HomeView from '@/views/home/HomeView.vue'
 import ClasseView from '@/views/classe/classeView.vue'
 import DiretorView from '@/views/diretor/diretorView.vue'

@@ -1,9 +1,10 @@
-export default class Diretor{
-    id:number;
+import Flex from "./flex";
+
+export default class Diretor extends Flex{
     nome: string
 
     constructor() {
-        this.id = 0;
+        super("/diretor/");
         this.nome = ""
     }
 

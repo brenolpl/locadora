@@ -1,7 +1,6 @@
 <template>
     <transition>
         <my-modal v-show="open">
-            <p class="text-red">{{erros}}</p>
             <form v-on:submit.prevent="formSave">
                 <modal-header>
                     Inserir Ator
@@ -9,7 +8,7 @@
                 </modal-header>
                 <modal-body>
                     <div class="form-floating mb-3">
-                        <input type="text" name="nome" id="nome" class="form-control" v-model="actor.nome" placeholder="nome" required>
+                        <input type="text" name="nome" id="nome" class="form-control" v-model="entity.nome" placeholder="nome" required>
                         <label for="nome" class="form-label">Nome</label>
                     </div>
                 </modal-body>
@@ -24,12 +23,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref, toRef, toRefs, watch } from 'vue'
-import useActors from '@/composables/ator';
-import Ator from '@/models/ator'
+import { computed, defineComponent, ref, toRef, toRefs, watch } from 'vue'
+import type { AxiosResponse } from 'axios';
+import useRequests from '@/composables/requests';
+import Ator from '@/models/ator';
 
 export default defineComponent({
-    name:'AtorForm',
+    name:'DiretorForm',
     props:{
         open:{
             type:Boolean,
@@ -40,27 +40,24 @@ export default defineComponent({
             default:0
         }
     },
-
     emits:['saved', 'close'],
-
     setup(props,{emit}) {
 
-        const { erros, saveActor, getActor, actor } = useActors();
+        const { erros, save, getById, entity } = useRequests(Ator);
 
         const isOpen = ref(false);
 
         const formSave = async () => {
-            console.log("🚀 ~ file: AtorForm.vue ~ line 49 ~ setup ~ actor", actor.value)
-            await saveActor(actor.value);
+            await save(entity.value);
             emit('saved');
         }
 
         watch(()=>props.editedId, (newVal) => {
-            getActor(newVal);
+            getById(newVal);
         });
 
         return {
-            actor,
+            entity,
             erros,
             formSave,
             isOpen

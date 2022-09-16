@@ -8,7 +8,7 @@
                 </modal-header>
                 <modal-body>
                     <div class="form-floating mb-3">
-                        <input type="text" name="nome" id="nome" class="form-control" v-model="variable.nome" placeholder="nome" required>
+                        <input type="text" name="nome" id="nome" class="form-control" v-model="entity.nome" placeholder="nome" required>
                         <label for="nome" class="form-label">Nome</label>
                     </div>
                 </modal-body>
@@ -25,7 +25,8 @@
 <script lang="ts">
 import { computed, defineComponent, ref, toRef, toRefs, watch } from 'vue'
 import type { AxiosResponse } from 'axios';
-import useDiretor from '@/composables/diretor';
+import useRequests from '@/composables/requests';
+import Diretor from '@/models/diretor';
 
 export default defineComponent({
     name:'DiretorForm',
@@ -42,12 +43,12 @@ export default defineComponent({
     emits:['saved', 'close'],
     setup(props,{emit}) {
 
-        const { erros, save, getById, variable } = useDiretor();
+        const { erros, save, getById, entity } = useRequests(Diretor);
 
         const isOpen = ref(false);
 
         const formSave = async () => {
-            await save(variable.value);
+            await save(entity.value);
             emit('saved');
         }
 
@@ -56,7 +57,7 @@ export default defineComponent({
         });
 
         return {
-            variable,
+            entity,
             erros,
             formSave,
             isOpen

@@ -12,7 +12,7 @@
                     <th class="col-sm-4">Devolução</th>
                 </my-thead>
                 <tbody>
-                    <my-tr v-for="(classe, i) in variables" :key="i" :id="classe.id" :table="'classe'" @delete="deleteElement(classe.id)" @edit="showFormEdit(classe.id)">
+                    <my-tr v-for="(classe, i) in entities" :key="i" :id="classe.id" :table="'classe'" @delete="deleteElement(classe.id)" @edit="showFormEdit(classe.id)">
                         <td>{{classe.nome}}</td>
                         <td>R${{classe.valor}}</td>
                         <td>{{classe.prazoDevolucao}}</td>
@@ -27,14 +27,15 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
 import ClasseForm from './classeForm.vue';
-import useClasses from '@/composables/classe';
+import useRequests from '@/composables/requests';
+import Classe from '@/models/classe';
 
 export default defineComponent({
     name:'ClasseView',
     components: { ClasseForm },
     setup() {
 
-        const { variables, getAll, destroy } = useClasses();
+        const { entities, getAll, destroy } = useRequests(Classe);
         const isOpen = ref(false);
         const editedId = ref(0);
 
@@ -56,7 +57,7 @@ export default defineComponent({
 
         onMounted(getAll);
 
-        return {isOpen, variables, getAll, refreshList, deleteElement, editedId, showFormEdit}
+        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit}
     },
 })
 </script>
