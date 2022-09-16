@@ -1,7 +1,8 @@
 <template>
     <transition>
         <my-modal v-show="open">
-            <form v-on:submit.prevent="createActor">
+            <p class="text-red">{{erros}}</p>
+            <form v-on:submit.prevent="formSave">
                 <modal-header>
                     Inserir Ator
                     <button type="button" class="btn-close" @click="$emit('close')"></button>
@@ -23,9 +24,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRef, toRefs, watch } from 'vue'
-import api from "@/services/api"
-import type { AxiosResponse } from 'axios';
+import { computed, defineComponent, reactive, ref, toRef, toRefs, watch } from 'vue'
+import useActors from '@/composables/ator';
+import Ator from '@/models/ator'
 
 export default defineComponent({
     name:'AtorForm',
@@ -34,88 +35,34 @@ export default defineComponent({
             type:Boolean,
             required:true
         },
-        editedActor:{
+        editedId:{
             type:Number,
             default:0
         }
     },
+
     emits:['saved', 'close'],
+
     setup(props,{emit}) {
+
+        const { erros, saveActor, getActor, actor } = useActors();
 
         const isOpen = ref(false);
 
-        // const editedActor = toRefs(props).editedActor;
-        // console.log("🚀 ~ file: AtorForm.vue ~ line 48 ~ setup ~ editedActor", editedActor.value)
+        const formSave = async () => {
+            console.log("🚀 ~ file: AtorForm.vue ~ line 49 ~ setup ~ actor", actor.value)
+            await saveActor(actor.value);
+            emit('saved');
+        }
 
-        const actor = ref({
-            nome:"",
-            id:0
+        watch(()=>props.editedId, (newVal) => {
+            getActor(newVal);
         });
-
-        const resetForm = () => {
-            actor.value = {
-                nome:"",
-                id:0
-            }
-        }
-
-        watch(()=>props.editedActor, (newVal) => {
-            findActor(newVal);
-        });
-
-        async function findActor(id:any){
-            const res = await requestFindApi(id);
-            if(res.status === 200){
-                actor.value = res.data
-                return;
-            }
-            console.log("Erro");
-        }
-
-        async function requestFindApi(id:any){
-            return api.get("/ator/" + id).then((response:AxiosResponse)=>{
-                return response;
-            }).catch((error)=>{
-                return (error.response.data || {success:false, message: error.message});
-            });
-        }
-
-        async function createActor(){
-            if(actor.value.nome.length == 0) return;
-
-            if(actor.value.id == 0){
-                const res = await requestCreateApi({nome:actor.value.nome});
-                if(res.status === 200){
-                    resetForm;
-                    emit('close');
-                    emit('saved');
-                    return;
-                }
-                console.log("Erro");
-            }
-            else{
-                const res = await requestCreateApi({id:actor.value.id,nome:actor.value.nome});
-                if(res.status === 200){
-                    resetForm;
-                    emit('close');
-                    emit('saved');
-                    return;
-                }
-                console.log("Erro");
-            }
-        }
-
-        async function requestCreateApi(data:string){
-            return api.post("/ator/save", data).then((response:AxiosResponse)=>{
-                return response;
-            }).catch((error)=>{
-                return (error.response.data || {success:false, message: error.message});
-            });
-        }
 
         return {
             actor,
-            createActor,
+            erros,
+            formSave,
             isOpen
         }   
     },

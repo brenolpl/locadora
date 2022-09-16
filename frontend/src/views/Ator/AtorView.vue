@@ -10,49 +10,50 @@
                     <th>Nome</th>
                 </my-thead>
                 <tbody>
-                    <my-tr v-for="(actor, i) in actors" :key="i" :id="actor.id" :table="'ator'" @deleted="getActors" @edit="showFormEdit(actor.id)">
+                    <my-tr v-for="(actor, i) in actors" :key="i" :id="actor.id" @delete="deleteActor(actor.id)" @edit="showFormEdit(actor.id)">
                         <td>{{actor.nome}}</td>
                     </my-tr>
                 </tbody>
             </my-table>
         </div>
-        <AtorForm :open="isOpen" @close="isOpen = !isOpen" @saved="getActors" :editedActor="editActor"/>
+        <AtorForm :open="isOpen" @close="isOpen = !isOpen" @saved="refreshList" :editedId="actorId"/>
     </main>
 </template>
 
 <script lang="ts">
-import api from '@/services/api';
-import { defineComponent, onMounted, ref } from 'vue'
+
+import useActors from '@/composables/ator';
+import { defineComponent, onMounted, ref, watch } from 'vue'
 import AtorForm from './AtorForm.vue';
 
 export default defineComponent({
     name:'AtorView',
     components: {AtorForm},
     setup() {
+
+        const { actors, getActors, destroyActor } = useActors();
         const isOpen = ref(false);
-        const actors = ref([]);
-        const editActor = ref(0);
-    
-        async function requestApi(){
-            return api.get("/ator/list").then((res) => {
-                return res.data;
-            }).catch((err) => {
-                return false;
-            });
-        }
-        async function getActors() {
-        const res = ref(await requestApi());
-        actors.value = res.value;
-        }
+        const actorId = ref(0);
 
         function showFormEdit(id:any){
-            editActor.value = id;
+            actorId.value = id;
             isOpen.value = true;
+        }
+
+        const deleteActor = async (id:any) => {
+            if(!window.confirm("Tem certeza que deseja excluir o ator?")) return;
+            await destroyActor(id);
+            await getActors();
+        }
+
+        const refreshList = async () => {
+            isOpen.value = false;
+            getActors();
         }
 
         onMounted(getActors);
 
-        return {isOpen, actors, getActors, editActor, showFormEdit}
+        return {isOpen, actors, getActors, refreshList, deleteActor, actorId, showFormEdit}
     },
 })
 </script>

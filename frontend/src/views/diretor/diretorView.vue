@@ -10,49 +10,49 @@
                     <th>Nome</th>
                 </my-thead>
                 <tbody>
-                    <my-tr v-for="(diretor, i) in diretores" :key="i" :id="diretor.id" :table="'diretor'" @deleted="getDiretores" @edit="showFormEdit(diretor.id)">
+                    <my-tr v-for="(diretor, i) in variables" :key="i" :id="diretor.id" :table="'diretor'" @delete="deleteElement(diretor.id)" @edit="showFormEdit(diretor.id)">
                         <td>{{diretor.nome}}</td>
                     </my-tr>
                 </tbody>
             </my-table>
         </div>
-        <DiretorForm :open="isOpen" @close="isOpen = !isOpen" @saved="getDiretores" :editedDiretor="editDiretor"/>
+        <DiretorForm :open="isOpen" @close="isOpen = !isOpen" @saved="refreshList" :editedId="editedId"/>
     </main>
 </template>
 
 <script lang="ts">
-import api from '@/services/api';
 import { defineComponent, onMounted, ref } from 'vue'
 import DiretorForm from './diretorForm.vue';
+import useDiretor from '@/composables/diretor';
 
 export default defineComponent({
     name:'DiretorView',
     components: {DiretorForm},
     setup() {
+
+        const { variables, getAll, destroy } = useDiretor();
         const isOpen = ref(false);
-        const diretores = ref([]);
-        const editDiretor = ref(0);
-    
-        async function requestApi(){
-            return api.get("/diretor/list").then((res) => {
-                return res.data;
-            }).catch((err) => {
-                return false;
-            });
-        }
-        async function getDiretores() {
-            const res = ref(await requestApi());
-            diretores.value = res.value;
-        }
+        const editedId = ref(0);
 
         function showFormEdit(id:any){
-            editDiretor.value = id;
+            editedId.value = id;
             isOpen.value = true;
         }
 
-        onMounted(getDiretores);
+        const deleteElement = async (id:any) => {
+            if(!window.confirm("Tem certeza que deseja excluir o ator?")) return;
+            await destroy(id);
+            await getAll();
+        }
 
-        return {isOpen, diretores, getDiretores, editDiretor, showFormEdit}
+        const refreshList = async () => {
+            isOpen.value = false;
+            getAll();
+        }
+
+        onMounted(getAll);
+
+        return {isOpen, variables, getAll, refreshList, deleteElement, editedId, showFormEdit}
     },
 })
 </script>
