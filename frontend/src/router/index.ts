@@ -3,7 +3,6 @@ import AtorView from '@/views/Ator/AtorView.vue'
 import HomeView from '@/views/home/HomeView.vue'
 import ClasseView from '@/views/classe/classeView.vue'
 import DiretorView from '@/views/diretor/diretorView.vue'
-import useRouter from 'vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
