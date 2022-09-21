@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,8 +47,16 @@ public class Titulo {
     @JoinColumn(name = "ID_CLASSIFICACAO")
     private Classificacao classificacao;
 
-    @ManyToMany
-    @JoinTable(name = "ATOR_TITULO", joinColumns = @JoinColumn(name = "ID_ATOR"))
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "ATOR_TITULO"
+            , joinColumns = {
+            @JoinColumn(name = "ID_TITULO")
+        }
+            , inverseJoinColumns = {
+            @JoinColumn(name = "ID_ATOR")
+        }
+    )
     private Set<Ator> atores;
 
     public Integer getId() {
