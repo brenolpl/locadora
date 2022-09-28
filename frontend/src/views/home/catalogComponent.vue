@@ -44,19 +44,7 @@ export default defineComponent({
                 <h1 class="display-1 opacity-25 fw-bold">FILMES</h1>
                 <h4 class="position-absolute top-50 fw-bold">APROVEITE O MOMENTO</h4>
             </header>
-            <div class="row row-cols-1 row-cols-3 g-5">
-                <!-- <div class="col">
-                    <card>
-                        <template #header>
-                            <img src="https://cinegarimpo.com.br/wp/content/uploads/2014/05/cinegarimpo_21053777_20131029202242322.jpg" alt="">
-                        </template>
-                        <template #content>
-                            <h2 class="text-white fw-bold flex-text-underline" style="text-shadow: 4px 4px 25px rgba(23,69,90,0.6)">
-                                A menina que roubava livros
-                            </h2>
-                        </template>
-                    </card>
-                </div> -->
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-5">
                 <div class="col" v-for="(film, i) in films" :key="i">
                     <card>
                         <template #header>

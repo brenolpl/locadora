@@ -27,6 +27,7 @@ import { computed, defineComponent, ref, toRef, toRefs, watch } from 'vue'
 import type { AxiosResponse } from 'axios';
 import useRequests from '@/composables/requests';
 import Ator from '@/models/ator';
+import Swal from 'sweetalert2';
 
 export default defineComponent({
     name:'DiretorForm',
@@ -48,6 +49,13 @@ export default defineComponent({
         const isOpen = ref(false);
 
         const formSave = async () => {
+            // Swal.fire({
+            //     position: 'top-end',
+            //     icon: 'success',
+            //     title: 'Your work has been saved',
+            //     showConfirmButton: false,
+            //     timer: 1500
+            // })
             await save(entity.value);
             emit('saved');
         }
