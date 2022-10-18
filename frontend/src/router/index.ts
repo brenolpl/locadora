@@ -3,6 +3,7 @@ import AtorView from '@/views/ator/AtorView.vue'
 import HomeView from '@/views/home/HomeView.vue'
 import ClasseView from '@/views/classe/classeView.vue'
 import DiretorView from '@/views/diretor/diretorView.vue'
+import TituloView from '@/views/titulo/tituloView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,11 @@ const router = createRouter({
       path:'/diretor',
       name:'diretor',
       component: DiretorView
+    },
+    {
+      path:'/titulos',
+      name:'titulos',
+      component: TituloView
     }
   ]
 })

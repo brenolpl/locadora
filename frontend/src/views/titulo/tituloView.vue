@@ -2,37 +2,40 @@
     <main class="d-flex align-items-center justify-content-center shadow">
         <div class="container">
             <header class="d-flex align-items-center justify-content-between mb-5">
-                <h1 class="text-dark">Lista de Atores</h1>
+                <h1 class="text-dark">Lista de Títulos</h1>
                 <button class="btn btn-primary fw-bold" @click="isOpen = true">Adicionar</button>
             </header>
             <my-table>
                 <my-thead>
-                    <th>Nome</th>
+                    <th class="col-sm-4">Nome</th>
+                    <th class="col-sm-2">Ano</th>
+                    <th class="col-sm-4">Sinopse</th>
                 </my-thead>
                 <tbody>
-                    <my-tr v-for="(ator, i) in entities" :key="i" :id="ator.id" :table="'diretor'" @delete="deleteElement(ator.id)" @edit="showFormEdit(ator.id)">
-                        <td>{{ator.nome}}</td>
+                    <my-tr v-for="(titulo, i) in entities" :key="i" :id="titulo.id" :table="'classe'" @delete="deleteElement(titulo.id)" @edit="showFormEdit(titulo.id)">
+                        <td>{{titulo.nome}}</td>
+                        <td>R${{titulo.ano}}</td>
+                        <td>{{titulo.sinopse}}</td>
                     </my-tr>
                 </tbody>
             </my-table>
         </div>
-        <AtorForm :open="isOpen" @close="isOpen = !isOpen" @saved="refreshList" :editedId="editedId"/>
+        <TituloForm :open="isOpen" @close="isOpen = !isOpen" @saved="refreshList" :editedId="editedId"/>
     </main>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
+import TituloForm from './tituloForm.vue';
 import useRequests from '@/composables/requests';
-import Ator from '@/models/ator';
-import AtorForm from './AtorForm.vue';
-import Swal from 'sweetalert2';
+import Titulo from '@/models/titulo';
 
 export default defineComponent({
-    name:'AtorView',
-    components: { AtorForm },
+    name:'TituloView',
+    components: { TituloForm },
     setup() {
 
-        const { entities, getAll, destroy } = useRequests(Ator);
+        const { entities, getAll, destroy } = useRequests(Titulo);
         const isOpen = ref(false);
         const editedId = ref(0);
 
@@ -44,12 +47,6 @@ export default defineComponent({
         const deleteElement = async (id:any) => {
             if(!window.confirm("Tem certeza que deseja excluir o ator?")) return;
             await destroy(id);
-            Swal.fire({
-                icon: 'success',
-                title: 'Ator excluído com sucesso!',
-                showConfirmButton: false,
-                timer: 1500
-            })
             await getAll();
         }
 

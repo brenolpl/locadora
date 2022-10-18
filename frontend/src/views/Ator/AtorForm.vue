@@ -49,14 +49,13 @@ export default defineComponent({
         const isOpen = ref(false);
 
         const formSave = async () => {
-            // Swal.fire({
-            //     position: 'top-end',
-            //     icon: 'success',
-            //     title: 'Your work has been saved',
-            //     showConfirmButton: false,
-            //     timer: 1500
-            // })
             await save(entity.value);
+            Swal.fire({
+                icon: 'success',
+                title: 'Ator adicionado com sucesso!',
+                showConfirmButton: false,
+                timer: 1500
+            })
             emit('saved');
         }
 
