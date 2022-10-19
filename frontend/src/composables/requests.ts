@@ -25,7 +25,16 @@ export default function useRequests<T extends Flex>(type: { new(): T ;}){
         const response = await api.delete(path + "delete?id=" + id);
     }
 
+    const setAtributo = (nome:string, valor:any) => {
+        entity.value.nome = valor;
+    }
+
+    const resetEntity = () => {
+        entity.value = new type();
+        console.log("🚀 ~ file: requests.ts ~ line 34 ~ resetEntity ~ entity.value", entity.value)    }
+
     const save = async (data:any) => {
+        console.log("🚀 ~ file: requests.ts ~ line 37 ~ save ~ data:any", data)
         erros.value = '';
         try{
             await api.post(path + "save", data);
@@ -46,6 +55,8 @@ export default function useRequests<T extends Flex>(type: { new(): T ;}){
         getAll,
         getById,
         destroy,
+        setAtributo,
+        resetEntity,
         save
     }
 

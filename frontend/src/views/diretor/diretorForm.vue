@@ -23,8 +23,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRef, toRefs, watch } from 'vue'
-import type { AxiosResponse } from 'axios';
+import { defineComponent, ref, watch } from 'vue'
 import useRequests from '@/composables/requests';
 import Diretor from '@/models/diretor';
 

@@ -26,6 +26,7 @@
         <router-link to="/classes" class="nav-link active">Classes</router-link>
         <router-link to="/diretor" class="nav-link active">Diretores</router-link>
         <router-link to="/titulos" class="nav-link active">Títulos</router-link>
+        <router-link to="/itens" class="nav-link active">Itens</router-link>
 
         </div>
 

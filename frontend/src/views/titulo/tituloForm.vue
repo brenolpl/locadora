@@ -19,13 +19,13 @@
                         <textarea name="sinopse" id="sinopse" cols="30" rows="100" class="form-control" v-model="entity.sinopse"></textarea>
                         <label for="nome" class="form-label">Sinopse</label>
                     </div>
-                    <select class="col-md-5 col-xl-4 form-select mb-3" aria-label="Selecione uma categoria">
-                        <option selected>Selecione uma categoria</option>
-                        <option value="1">Romance</option>
-                        <option value="2">Terror</option>
-                        <option value="3">Supense</option>
+                    <select class="col-md-5 col-xl-4 form-select mb-3" aria-label="Selecione uma categoria" v-model="entity.categoria">
+                        <option disabled selected>Selecione uma categoria</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Terror">Terror</option>
+                        <option value="Suspense">Supense</option>
                     </select>
-                    <ClasseSelect @changeSelect="addClasse"/>
+                    <ClasseSelect @changeSelect="addClasse" :v-model="entity.classificacao.id"/>
                     <DiretorSelect @changeSelect="addDiretor" />
                     <div class="col-sm-6">
                         <a class="btn btn-primary fw-bold" @click="openModalAtor = true">Adicionar Atores</a>
@@ -50,6 +50,7 @@ import Titulo from '@/models/titulo';
 import AtorModalComponent from '../../components/atorModal/atorModalComponent.vue';
 import DiretorSelect from '../../components/diretorSelect/diretorSelectComponent.vue';
 import ClasseSelect from '../../components/classeSelect/classeSelectComponent.vue';
+import Swal from 'sweetalert2';
 export default defineComponent({
     name: "TituloForm",
     props: {
@@ -67,9 +68,9 @@ export default defineComponent({
 
         const { erros, save, getById, entity } = useRequests(Titulo);
 
+        const classificacao = ref();
+
         const openModalAtor = ref(false);
-        const diretor = ref();
-        const classe = ref();
 
         const formSave = async () => {
             await save(entity.value);
@@ -77,19 +78,17 @@ export default defineComponent({
         };
 
         const addAtor = (atoresList:any) => {
-            entity.atores = atoresList;
-            console.log("🚀 ~ file: tituloForm.vue ~ line 82 ~ addAtor ~ entity.atores", entity.atores)
+            entity.value.atores = atoresList;
             openModalAtor.value = !openModalAtor.value;
         }
 
         const addDiretor = (director:any) => {
-            entity.diretor = director;
-            console.log("🚀 ~ file: tituloForm.vue ~ line 87 ~ addDiretor ~ entity.diretor", entity.diretor)        
+            entity.value.diretor = director;
         }
 
         const addClasse = (classe:any) => {
-            entity.classificacao = classe;
-            console.log("🚀 ~ file: tituloForm.vue ~ line 92 ~ addClasse ~ entity.classificacao", entity.classificacao)        }
+            entity.value.classificacao = classe;
+        }
 
         watch(() => props.editedId, (newVal) => {
             getById(newVal);
@@ -102,6 +101,7 @@ export default defineComponent({
             addAtor,
             addDiretor,
             addClasse,
+            classificacao,
             openModalAtor
         };
     },

@@ -2,40 +2,40 @@
     <main class="d-flex align-items-center justify-content-center shadow">
         <div class="container">
             <header class="d-flex align-items-center justify-content-between mb-5">
-                <h1 class="text-dark">Lista de Títulos</h1>
+                <h1 class="text-dark">Lista de Items</h1>
                 <button class="btn btn-primary fw-bold" @click="isOpen = true">Adicionar</button>
             </header>
             <my-table>
                 <my-thead>
-                    <th class="col-sm-4">Nome</th>
-                    <th class="col-sm-2">Ano</th>
-                    <th class="col-sm-4">Diretor</th>
+                    <th class="col-sm-4">Titulo</th>
+                    <th class="col-sm-4">N° de Série</th>
+                    <th class="col-sm-2">Tipo</th>
                 </my-thead>
                 <tbody>
-                    <my-tr v-for="(titulo, i) in entities" :key="i" :id="titulo.id" :table="'classe'" @delete="deleteElement(titulo.id)" @edit="showFormEdit(titulo.id)">
-                        <td>{{titulo.nome}}</td>
-                        <td>{{titulo.ano}}</td>
-                        <td>{{titulo.diretor.nome}}</td>
+                    <my-tr v-for="(item, i) in entities" :key="i" :id="item.id" :table="'item'" @delete="deleteElement(item.id)" @edit="showFormEdit(item.id)">
+                        <td>{{item.titulo.nome}}</td>
+                        <td>R${{item.numeroSerie}}</td>
+                        <td>{{item.tipoItem}}</td>
                     </my-tr>
                 </tbody>
             </my-table>
         </div>
-        <TituloForm :open="isOpen" @close="resetForm" @saved="refreshList" :editedId="editedId"/>
+        <ItemForm :open="isOpen" @close="isOpen = !isOpen" @saved="refreshList" :editedId="editedId"/>
     </main>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
-import TituloForm from './tituloForm.vue';
 import useRequests from '@/composables/requests';
-import Titulo from '@/models/titulo';
+import Item from '@/models/item';
+import ItemForm from "./itemForm.vue";
 
 export default defineComponent({
-    name:'TituloView',
-    components: { TituloForm },
+    name:'ItemView',
+    components: { ItemForm },
     setup() {
 
-        const { entities, getAll, destroy, resetEntity } = useRequests(Titulo);
+        const { entities, getAll, destroy } = useRequests(Item);
         const isOpen = ref(false);
         const editedId = ref(0);
 
@@ -55,14 +55,9 @@ export default defineComponent({
             getAll();
         }
 
-        const resetForm = () => {
-            resetEntity();
-            isOpen.value = !isOpen.value;
-            console.log("🚀 ~ file: tituloView.vue ~ line 61 ~ resetForm ~ isOpen.value", isOpen.value)        }
-
         onMounted(getAll);
 
-        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit, resetForm}
+        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit}
     },
 })
 </script>

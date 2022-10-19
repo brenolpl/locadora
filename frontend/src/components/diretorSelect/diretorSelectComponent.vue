@@ -1,12 +1,12 @@
 <template>
     <select class="col-md-5 col-xl-4 form-select mb-3" aria-label="Selecione um diretor" @change="onChange" id="selectDiretor">
-        <option selected>Selecione um diretor</option>
+        <option disabled selected>Selecione um diretor</option>
         <option v-for="(diretor, i) in entities" :key="i" :value="diretor.id">{{diretor.nome}}</option>
     </select>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onMounted, ref, watch } from 'vue'
 import useRequests from '@/composables/requests';
 import Diretor from '@/models/diretor';
 
@@ -31,6 +31,10 @@ export default defineComponent({
                 id:selecionado.value,
             });
         }
+
+        // watch(() => props., (newVal) => {
+        //     getById(newVal);
+        // });
 
         onMounted(getAll);
 
