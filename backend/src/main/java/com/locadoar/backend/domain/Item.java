@@ -9,11 +9,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "item")
-public class Item {
+public class Item implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
