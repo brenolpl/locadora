@@ -11,13 +11,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Data
 @Entity
 @Table(name = "DIRETOR")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Diretor {
+public class Diretor implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
