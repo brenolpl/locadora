@@ -19,7 +19,7 @@ public class Item implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_ITEM")
-    private Integer idItem;
+    private Integer id;
 
     @Column(name = "numero_serie")
     private String numeroSerie;
@@ -34,12 +34,12 @@ public class Item implements Serializable {
     @JoinColumn(name = "ID_TITULO")
     private Titulo titulo;
 
-    public Integer getIdItem() {
-        return idItem;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdItem(Integer idItem) {
-        this.idItem = idItem;
+    public void setId(Integer idItem) {
+        this.id = idItem;
     }
 
     public String getNumeroSerie() {
