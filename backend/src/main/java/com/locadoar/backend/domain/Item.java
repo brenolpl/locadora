@@ -30,7 +30,7 @@ public class Item implements Serializable {
     @Column(name = "tipo_item")
     private String tipoItem;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "ID_TITULO")
     private Titulo titulo;
 

@@ -37,6 +37,6 @@ public class Classificacao implements Serializable {
 
     @NotNull
     @Column(name = "PRAZO_DEVOLUCAO")
-    private LocalDateTime prazoDevolucao;
+    private Integer prazoDevolucao;
 
 }
