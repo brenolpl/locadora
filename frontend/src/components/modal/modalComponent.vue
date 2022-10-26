@@ -3,22 +3,6 @@
         <div class="my-modal" id="modalAtorForm" aria-hidden="true" aria-labelledby="modalAtorFormLabel" tabindex="-1">
             <div class="my-modal-inner">
                 <slot></slot>
-                <!-- <form class="modal-content">
-                    <div class="my-modal-header">
-                        <legend>Inserir novo ator</legend>
-                        <button type="button" class="btn-close" @click="$emit('close')"></button>
-                    </div>
-                    <div class="my-modal-body">
-                        <div class="form-floating mb-3">
-                            <input type="text" name="nome" id="nome" class="form-control" placeholder="nome" required>
-                            <label for="nome" class="form-label">Nome</label>
-                        </div>
-                    </div>
-                    <div class="my-modal-footer">
-                        <button class="btn btn-outline-danger" type="button" @click="$emit('close')">Cancelar</button>
-                        <button class="btn btn-primary" type="submit">Salvar</button>
-                    </div>
-                </form> -->
             </div>
         </div>
     </transition>
@@ -54,6 +38,10 @@ export default defineComponent({
         background-color: #fff;
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
         padding: 2rem;
+        min-width: 60%;
+        max-width: 80%;
+        max-height: 90%;
+        overflow-y: auto;
     }
 
     .v-enter-active, .v-leave-active {

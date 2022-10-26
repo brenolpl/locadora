@@ -2,40 +2,40 @@
     <main class="d-flex align-items-center justify-content-center shadow">
         <div class="container">
             <header class="d-flex align-items-center justify-content-between mb-5">
-                <h1 class="text-dark">Lista de Classes</h1>
+                <h1 class="text-dark">Lista de Items</h1>
                 <button class="btn btn-primary fw-bold" @click="isOpen = true">Adicionar</button>
             </header>
             <my-table>
                 <my-thead>
-                    <th class="col-sm-4">Nome</th>
-                    <th class="col-sm-2">Valor</th>
-                    <th class="col-sm-4">Devolução</th>
+                    <th class="col-sm-4">Titulo</th>
+                    <th class="col-sm-4">N° de Série</th>
+                    <th class="col-sm-2">Tipo</th>
                 </my-thead>
                 <tbody>
-                    <my-tr v-for="(classe, i) in entities" :key="i" :id="classe.id" :table="'classe'" @delete="deleteElement(classe.id)" @edit="showFormEdit(classe.id)">
-                        <td>{{classe.nome}}</td>
-                        <td>R${{classe.valor}}</td>
-                        <td>{{classe.prazoDevolucao}}</td>
+                    <my-tr v-for="(item, i) in entities" :key="i" :id="item.id" :table="'item'" @delete="deleteElement(item.id)" @edit="showFormEdit(item.id)">
+                        <td>{{item.titulo.nome}}</td>
+                        <td>{{item.numeroSerie}}</td>
+                        <td>{{item.tipoItem}}</td>
                     </my-tr>
                 </tbody>
             </my-table>
         </div>
-        <ClasseForm :open="isOpen" @close="isOpen = !isOpen" @saved="refreshList" :editedId="editedId"/>
+        <ItemForm :open="isOpen" @close="isOpen = !isOpen" @saved="refreshList" :editedId="editedId"/>
     </main>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
-import ClasseForm from './classeForm.vue';
 import useRequests from '@/composables/requests';
-import Classe from '@/models/classe';
+import Item from '@/models/item';
+import ItemForm from "./itemForm.vue";
 
 export default defineComponent({
-    name:'ClasseView',
-    components: { ClasseForm },
+    name:'ItemView',
+    components: { ItemForm },
     setup() {
 
-        const { entities, getAll, destroy } = useRequests(Classe);
+        const { entities, getAll, destroy } = useRequests(Item);
         const isOpen = ref(false);
         const editedId = ref(0);
 

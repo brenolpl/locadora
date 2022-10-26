@@ -2,40 +2,40 @@
     <main class="d-flex align-items-center justify-content-center shadow">
         <div class="container">
             <header class="d-flex align-items-center justify-content-between mb-5">
-                <h1 class="text-dark">Lista de Classes</h1>
+                <h1 class="text-dark">Lista de Clientes</h1>
                 <button class="btn btn-primary fw-bold" @click="isOpen = true">Adicionar</button>
             </header>
             <my-table>
                 <my-thead>
                     <th class="col-sm-4">Nome</th>
-                    <th class="col-sm-2">Valor</th>
-                    <th class="col-sm-4">Devolução</th>
+                    <th class="col-sm-2">N° Inscrição</th>
+                    <th class="col-sm-4">Data Nascimento</th>
                 </my-thead>
                 <tbody>
-                    <my-tr v-for="(classe, i) in entities" :key="i" :id="classe.id" :table="'classe'" @delete="deleteElement(classe.id)" @edit="showFormEdit(classe.id)">
-                        <td>{{classe.nome}}</td>
-                        <td>R${{classe.valor}}</td>
-                        <td>{{classe.prazoDevolucao}}</td>
+                    <my-tr v-for="(cliente, i) in entities" :key="i" :id="cliente.id" :table="'classe'" @delete="deleteElement(cliente.id)" @edit="showFormEdit(cliente.id)">
+                        <td>{{cliente.nome}}</td>
+                        <td>{{cliente.numInscricao}}</td>
+                        <td>{{cliente.date || ''}}</td>
                     </my-tr>
                 </tbody>
             </my-table>
         </div>
-        <ClasseForm :open="isOpen" @close="isOpen = !isOpen" @saved="refreshList" :editedId="editedId"/>
+        <ClienteForm :open="isOpen" @close="resetForm" @saved="refreshList" :editedId="editedId"/>
     </main>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
-import ClasseForm from './classeForm.vue';
+import ClienteForm from './clienteForm.vue';
 import useRequests from '@/composables/requests';
-import Classe from '@/models/classe';
+import Cliente from '@/models/cliente';
 
 export default defineComponent({
-    name:'ClasseView',
-    components: { ClasseForm },
+    name:'ClienteView',
+    components: { ClienteForm },
     setup() {
 
-        const { entities, getAll, destroy } = useRequests(Classe);
+        const { entities, getAll, destroy, resetEntity } = useRequests(Cliente);
         const isOpen = ref(false);
         const editedId = ref(0);
 
@@ -45,7 +45,7 @@ export default defineComponent({
         }
 
         const deleteElement = async (id:any) => {
-            if(!window.confirm("Tem certeza que deseja excluir o ator?")) return;
+            if(!window.confirm("Tem certeza que deseja excluir o cliente?")) return;
             await destroy(id);
             await getAll();
         }
@@ -55,9 +55,14 @@ export default defineComponent({
             getAll();
         }
 
+        const resetForm = () => {
+            resetEntity();
+            isOpen.value = !isOpen.value;
+        }
+
         onMounted(getAll);
 
-        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit}
+        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit, resetForm}
     },
 })
 </script>

@@ -10,50 +10,57 @@
                     <th>Nome</th>
                 </my-thead>
                 <tbody>
-                    <my-tr v-for="(actor, i) in actors" :key="i" :id="actor.id" @delete="deleteActor(actor.id)" @edit="showFormEdit(actor.id)">
-                        <td>{{actor.nome}}</td>
+                    <my-tr v-for="(ator, i) in entities" :key="i" :id="ator.id" :table="'diretor'" @delete="deleteElement(ator.id)" @edit="showFormEdit(ator.id)">
+                        <td>{{ator.nome}}</td>
                     </my-tr>
                 </tbody>
             </my-table>
         </div>
-        <AtorForm :open="isOpen" @close="isOpen = !isOpen" @saved="refreshList" :editedId="actorId"/>
+        <AtorForm :open="isOpen" @close="isOpen = !isOpen" @saved="refreshList" :editedId="editedId"/>
     </main>
 </template>
 
 <script lang="ts">
-
-import useActors from '@/composables/ator';
-import { defineComponent, onMounted, ref, watch } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
+import useRequests from '@/composables/requests';
+import Ator from '@/models/ator';
 import AtorForm from './AtorForm.vue';
+import Swal from 'sweetalert2';
 
 export default defineComponent({
     name:'AtorView',
-    components: {AtorForm},
+    components: { AtorForm },
     setup() {
 
-        const { actors, getActors, destroyActor } = useActors();
+        const { entities, getAll, destroy } = useRequests(Ator);
         const isOpen = ref(false);
-        const actorId = ref(0);
+        const editedId = ref(0);
 
         function showFormEdit(id:any){
-            actorId.value = id;
+            editedId.value = id;
             isOpen.value = true;
         }
 
-        const deleteActor = async (id:any) => {
+        const deleteElement = async (id:any) => {
             if(!window.confirm("Tem certeza que deseja excluir o ator?")) return;
-            await destroyActor(id);
-            await getActors();
+            await destroy(id);
+            Swal.fire({
+                icon: 'success',
+                title: 'Ator excluído com sucesso!',
+                showConfirmButton: false,
+                timer: 1500
+            })
+            await getAll();
         }
 
         const refreshList = async () => {
             isOpen.value = false;
-            getActors();
+            getAll();
         }
 
-        onMounted(getActors);
+        onMounted(getAll);
 
-        return {isOpen, actors, getActors, refreshList, deleteActor, actorId, showFormEdit}
+        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit}
     },
 })
 </script>

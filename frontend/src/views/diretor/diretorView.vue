@@ -10,7 +10,7 @@
                     <th>Nome</th>
                 </my-thead>
                 <tbody>
-                    <my-tr v-for="(diretor, i) in variables" :key="i" :id="diretor.id" :table="'diretor'" @delete="deleteElement(diretor.id)" @edit="showFormEdit(diretor.id)">
+                    <my-tr v-for="(diretor, i) in entities" :key="i" :id="diretor.id" :table="'diretor'" @delete="deleteElement(diretor.id)" @edit="showFormEdit(diretor.id)">
                         <td>{{diretor.nome}}</td>
                     </my-tr>
                 </tbody>
@@ -23,14 +23,15 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
 import DiretorForm from './diretorForm.vue';
-import useDiretor from '@/composables/diretor';
+import useRequests from '@/composables/requests';
+import Diretor from '@/models/diretor';
 
 export default defineComponent({
     name:'DiretorView',
     components: {DiretorForm},
     setup() {
 
-        const { variables, getAll, destroy } = useDiretor();
+        const { entities, getAll, destroy } = useRequests(Diretor);
         const isOpen = ref(false);
         const editedId = ref(0);
 
@@ -52,7 +53,7 @@ export default defineComponent({
 
         onMounted(getAll);
 
-        return {isOpen, variables, getAll, refreshList, deleteElement, editedId, showFormEdit}
+        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit}
     },
 })
 </script>

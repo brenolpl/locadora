@@ -1,15 +1,15 @@
-export default class Classe{
-    id:number;
+import Flex from "./flex";
+
+export default class Classe extends Flex{
     nome: string;
     valor:number;
-    prazoDevolucao: Date;
+    prazoDevolucao: number;
 
     constructor() {
-        this.id = 0;
+        super("/classificacao/");
         this.nome = "",
         this.valor = 0,
-        this.prazoDevolucao = new Date();
-
+        this.prazoDevolucao = 0;
     }
 
 }

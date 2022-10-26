@@ -2,40 +2,40 @@
     <main class="d-flex align-items-center justify-content-center shadow">
         <div class="container">
             <header class="d-flex align-items-center justify-content-between mb-5">
-                <h1 class="text-dark">Lista de Classes</h1>
+                <h1 class="text-dark">Lista de Títulos</h1>
                 <button class="btn btn-primary fw-bold" @click="isOpen = true">Adicionar</button>
             </header>
             <my-table>
                 <my-thead>
                     <th class="col-sm-4">Nome</th>
-                    <th class="col-sm-2">Valor</th>
-                    <th class="col-sm-4">Devolução</th>
+                    <th class="col-sm-2">Ano</th>
+                    <th class="col-sm-4">Diretor</th>
                 </my-thead>
                 <tbody>
-                    <my-tr v-for="(classe, i) in entities" :key="i" :id="classe.id" :table="'classe'" @delete="deleteElement(classe.id)" @edit="showFormEdit(classe.id)">
-                        <td>{{classe.nome}}</td>
-                        <td>R${{classe.valor}}</td>
-                        <td>{{classe.prazoDevolucao}}</td>
+                    <my-tr v-for="(titulo, i) in entities" :key="i" :id="titulo.id" :table="'classe'" @delete="deleteElement(titulo.id)" @edit="showFormEdit(titulo.id)">
+                        <td>{{titulo.nome}}</td>
+                        <td>{{titulo.ano}}</td>
+                        <td>{{titulo.diretor?.nome || ''}}</td>
                     </my-tr>
                 </tbody>
             </my-table>
         </div>
-        <ClasseForm :open="isOpen" @close="isOpen = !isOpen" @saved="refreshList" :editedId="editedId"/>
+        <TituloForm :open="isOpen" @close="resetForm" @saved="refreshList" :editedId="editedId"/>
     </main>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
-import ClasseForm from './classeForm.vue';
+import TituloForm from './tituloForm.vue';
 import useRequests from '@/composables/requests';
-import Classe from '@/models/classe';
+import Titulo from '@/models/titulo';
 
 export default defineComponent({
-    name:'ClasseView',
-    components: { ClasseForm },
+    name:'TituloView',
+    components: { TituloForm },
     setup() {
 
-        const { entities, getAll, destroy } = useRequests(Classe);
+        const { entities, getAll, destroy, resetEntity } = useRequests(Titulo);
         const isOpen = ref(false);
         const editedId = ref(0);
 
@@ -55,9 +55,14 @@ export default defineComponent({
             getAll();
         }
 
+        const resetForm = () => {
+            resetEntity();
+            isOpen.value = !isOpen.value;
+        }
+
         onMounted(getAll);
 
-        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit}
+        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit, resetForm}
     },
 })
 </script>

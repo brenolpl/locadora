@@ -6,16 +6,15 @@ import router from './router'
 
 import './assets/style.css'
 
-import myComponents from './plugins/myComponents'
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
-// import AppDropdown from './components/dropdown/dropdownComponent.vue';
-// import ActionDropdown from './components/dropdown/actionDropdown.vue'
-// import DropdownItem from './components/dropdown/dropdownItem.vue'
-// import TrashIcon from './components/iconsComponents/trashFillComponent.vue'
+import myComponents from './plugins/myComponents'
 
 const app = createApp(App)
 
 app.use(createPinia())
+app.use(VueSweetalert2);
 app.use(router)
 app.use(myComponents)
 

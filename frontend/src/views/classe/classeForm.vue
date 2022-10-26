@@ -6,18 +6,18 @@
                     Inserir Classe
                     <button type="button" class="btn-close" @click="$emit('close')"></button>
                 </modal-header>
-                <modal-body>
-                    <div class="form-floating mb-3">
-                        <input type="text" name="nome" id="nome" class="form-control" v-model="variable.nome" placeholder="nome" required>
+                <modal-body class="d-flex align-items-center flex-wrap gap-3">
+                    <div class="form-floating mb-3 col-sm-12">
+                        <input type="text" name="nome" id="nome" class="form-control" v-model="entity.nome" placeholder="nome" required>
                         <label for="nome" class="form-label">Nome</label>
                     </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" name="valor" id="valor" class="form-control" v-model="variable.valor" placeholder="R$ 0,00" required>
+                    <div class="form-floating mb-3 col-xl-5">
+                        <input type="text" name="valor" id="valor" class="form-control" v-model="entity.valor" placeholder="R$ 0,00" required>
                         <label for="valor" class="form-label">Valor</label>
                     </div>
-                    <div class="form-floating mb-3">
-                        <input type="datetime-local" name="devolucao" id="devolucao" class="form-control" v-model="variable.devolucao" placeholder="xx/xx/xxxx" required>
-                        <label for="nome" class="form-label">Data de Devolução</label>
+                    <div class="form-floating mb-3 col-xl-5">
+                        <input type="number" name="devolucao" id="devolucao" class="form-control" v-model="entity.prazoDevolucao" placeholder="Digite um prazo" required>
+                        <label for="nome" class="form-label">Prazo de Devolução</label>
                     </div>
                 </modal-body>
                 <modal-footer>
@@ -31,8 +31,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRef, toRefs, watch } from 'vue'
-import useClasses from '@/composables/classe';
+import { computed, defineComponent, ref, toRef, toRefs, watch } from 'vue';
+
+import useRequests from '@/composables/requests';
+import Classe from '@/models/classe';
 export default defineComponent({
     name:'ClasseForm',
     props:{
@@ -48,12 +50,12 @@ export default defineComponent({
     emits:['saved', 'close'],
     setup(props,{emit}) {
 
-        const { erros, save, getById, variable } = useClasses();
+        const { erros, save, getById, entity } = useRequests(Classe);
 
         const isOpen = ref(false);
 
         const formSave = async () => {
-            await save(variable.value);
+            await save(entity.value);
             emit('saved');
         }
 
@@ -62,7 +64,7 @@ export default defineComponent({
         });
 
         return {
-            variable,
+            entity,
             erros,
             formSave,
             isOpen
