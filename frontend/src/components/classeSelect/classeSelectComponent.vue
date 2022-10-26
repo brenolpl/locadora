@@ -1,5 +1,5 @@
 <template>
-    <select class="col-md-5 col-xl-4 form-select mb-3" aria-label="Selecione uma classificação" @change="onChange" id="selectClasse">
+    <select class="form-select" aria-label="Selecione uma classificação" @change="onChange" id="selectClasse">
         <option disabled selected>Selecione uma classificação</option>
         <option v-for="(classe, i) in entities" :key="i" :value="classe.id">{{classe.nome}}</option>
     </select>

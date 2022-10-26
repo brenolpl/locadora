@@ -21,9 +21,12 @@
                     </div>
                     <div class="form-floating mb-3">
                         <input type="datetime-local" name="aquisicao" id="aquisicao" class="form-control" v-model="entity.dataAquisicao" placeholder="xx/xx/xxxx" required>
-                        <label for="nome" class="form-label">Data de Devolução</label>
+                        <label for="nome" class="form-label">Data de Aquisição</label>
                     </div>
-                    <SelectTitulo :options="entities" :selected="entity.titulo" @changeSelect="addTitulo" />
+                    <div class="col-md-5 col-xl-3 mb-3">
+                        <label for="selectClasse" class="form-label">Selecione um título</label>
+                        <SelectTitulo @changeSelect="addTitulo" :value="entity.titulo?.id"/>
+                    </div>
                 </modal-body>
                 <modal-footer>
                     <button class="btn btn-outline-danger" type="button" @click="$emit('close')">Cancelar</button>

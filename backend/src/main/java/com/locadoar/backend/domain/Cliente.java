@@ -42,7 +42,7 @@ public class Cliente implements Serializable {
 
     @NotNull
     @Column(name = "IS_ATIVO", nullable = false)
-    private Boolean isAtivo;
+    private boolean isAtivo;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_CLIENTE_DEPENDENTE")
@@ -88,11 +88,11 @@ public class Cliente implements Serializable {
         this.sexo = sexo;
     }
 
-    public Boolean getAtivo() {
+    public boolean getAtivo() {
         return isAtivo;
     }
 
-    public void setAtivo(Boolean ativo) {
+    public void setAtivo(boolean ativo) {
         isAtivo = ativo;
     }
 }

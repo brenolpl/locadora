@@ -16,17 +16,26 @@
                         <label for="valor" class="form-label">Ano</label>
                     </div>
                     <div class="col-sm-12 col form-floating mb-3">
-                        <textarea name="sinopse" id="sinopse" cols="30" rows="100" class="form-control" v-model="entity.sinopse"></textarea>
+                        <textarea name="sinopse" id="sinopse" class="form-control" v-model="entity.sinopse" style="min-height:200px"></textarea>
                         <label for="nome" class="form-label">Sinopse</label>
                     </div>
-                    <select class="col-md-5 col-xl-4 form-select mb-3" aria-label="Selecione uma categoria" v-model="entity.categoria">
-                        <option disabled selected>Selecione uma categoria</option>
-                        <option value="Romance">Romance</option>
-                        <option value="Terror">Terror</option>
-                        <option value="Suspense">Supense</option>
-                    </select>
-                    <ClasseSelect @changeSelect="addClasse" :v-model="entity.classificacao.id"/>
-                    <DiretorSelect @changeSelect="addDiretor" />
+                    <div class="col-md-5 col-xl-3 mb-3">
+                        <label for="selectCategoria" class="form-label">Selecione uma categoria</label>
+                        <select class="form-select" aria-label="Selecione uma categoria" id="selectCategoria" v-model="entity.categoria">
+                            <option disabled selected>Selecione uma categoria</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Terror">Terror</option>
+                            <option value="Suspense">Supense</option>
+                        </select>
+                    </div>
+                    <div class="col-md-5 col-xl-3 mb-3">
+                        <label for="selectClasse" class="form-label">Selecione uma classificação</label>
+                        <ClasseSelect @changeSelect="addClasse" :value="entity.classificacao?.id"/>
+                    </div>
+                    <div class="col-md-5 col-xl-3 mb-3">
+                        <label for="selectDiretor" class="form-label">Selecione um diretor</label>
+                        <DiretorSelect @changeSelect="addDiretor" :value="entity.diretor?.id" />
+                    </div>
                     <div class="col-sm-6">
                         <a class="btn btn-primary fw-bold" @click="openModalAtor = true">Adicionar Atores</a>
                     </div>
@@ -38,7 +47,7 @@
             </form>
         </my-modal>
     </transition>
-    <AtorModalComponent :open="openModalAtor" @close="openModalAtor = !openModalAtor" @saved="addAtor"/>
+    <AtorModalComponent :actorsSelected="entity.atores" :open="openModalAtor" @close="openModalAtor = !openModalAtor" @saved="addAtor"/>
 
 </template>
 
@@ -74,6 +83,12 @@ export default defineComponent({
 
         const formSave = async () => {
             await save(entity.value);
+            Swal.fire({
+                icon: 'success',
+                title: 'Titulo adicionado com sucesso!',
+                showConfirmButton: false,
+                timer: 1500
+            })
             emit("saved");
         };
 

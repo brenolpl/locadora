@@ -26,6 +26,7 @@
 import { defineComponent, ref, watch } from 'vue'
 import useRequests from '@/composables/requests';
 import Diretor from '@/models/diretor';
+import Swal from 'sweetalert2';
 
 export default defineComponent({
     name:'DiretorForm',

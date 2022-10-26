@@ -1,5 +1,5 @@
 <template>
-    <select class="col-md-5 col-xl-4 form-select mb-3" aria-label="Selecione um diretor" @change="onChange" id="selectDiretor">
+    <select class="form-select" aria-label="Selecione um diretor" @change="onChange" id="selectDiretor">
         <option disabled selected>Selecione um diretor</option>
         <option v-for="(diretor, i) in entities" :key="i" :value="diretor.id">{{diretor.nome}}</option>
     </select>

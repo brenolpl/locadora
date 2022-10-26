@@ -14,7 +14,7 @@
                 <tbody>
                     <my-tr v-for="(item, i) in entities" :key="i" :id="item.id" :table="'item'" @delete="deleteElement(item.id)" @edit="showFormEdit(item.id)">
                         <td>{{item.titulo.nome}}</td>
-                        <td>R${{item.numeroSerie}}</td>
+                        <td>{{item.numeroSerie}}</td>
                         <td>{{item.tipoItem}}</td>
                     </my-tr>
                 </tbody>

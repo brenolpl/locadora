@@ -3,13 +3,13 @@ import Flex from "./flex";
 export default class Classe extends Flex{
     nome: string;
     valor:number;
-    prazoDevolucao: Date;
+    prazoDevolucao: number;
 
     constructor() {
         super("/classificacao/");
         this.nome = "",
         this.valor = 0,
-        this.prazoDevolucao = new Date();
+        this.prazoDevolucao = 0;
     }
 
 }
