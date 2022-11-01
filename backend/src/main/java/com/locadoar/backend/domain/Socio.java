@@ -4,22 +4,13 @@ import com.sun.istack.NotNull;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "SOCIO")
-public class Socio implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_SOCIO")
-    private Integer id;
+@PrimaryKeyJoinColumn(name = "ID_CLIENTE")
+public class Socio extends Cliente{
 
     @NotNull
     @Column(name = "CPF", nullable = false, length = 11)
@@ -31,19 +22,6 @@ public class Socio implements Serializable {
     @NotNull
     @Column(name = "TEL", length = 11)
     private String telefone;
-
-    @NotNull
-    @OneToOne
-    @JoinColumn(name = "ID_CLIENTE")
-    private Cliente cliente;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getCpf() {
         return cpf;
@@ -67,13 +45,5 @@ public class Socio implements Serializable {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
     }
 }

@@ -8,6 +8,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -18,6 +20,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "CLIENTE")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Cliente implements Serializable {
 
     @Id
@@ -43,56 +46,4 @@ public class Cliente implements Serializable {
     @NotNull
     @Column(name = "IS_ATIVO", nullable = false)
     private boolean isAtivo;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_CLIENTE_DEPENDENTE")
-    private Set<Dependente> dependentes;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNumInscricao() {
-        return numInscricao;
-    }
-
-    public void setNumInscricao(String numInscricao) {
-        this.numInscricao = numInscricao;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getSexo() {
-        return sexo;
-    }
-
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
-    }
-
-    public boolean getAtivo() {
-        return isAtivo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        isAtivo = ativo;
-    }
 }

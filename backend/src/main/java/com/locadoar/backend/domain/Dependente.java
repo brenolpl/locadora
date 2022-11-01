@@ -1,45 +1,29 @@
 package com.locadoar.backend.domain;
 
-import javax.persistence.Column;
+
+import com.sun.istack.NotNull;
+
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "DEPENDENTE")
-public class Dependente implements Serializable {
+@PrimaryKeyJoinColumn(name = "ID_CLIENTE")
+public class Dependente extends Cliente {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_DEPENDENTE")
-    private Integer id;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "ID_SOCIO", nullable = false)
+    private Socio socio;
 
-    @OneToOne
-    @JoinColumn(name = "ID_CLIENTE_RESPONSAVEL")
-    private Cliente clienteResponsavel;
-
-    @OneToOne
-    @JoinColumn(name = "ID_CLIENTE_DEPENDENTE")
-    private Cliente clienteDependente;
-
-    public Cliente getClienteResponsavel() {
-        return clienteResponsavel;
+    public Socio getSocio() {
+        return socio;
     }
 
-    public void setClienteResponsavel(Cliente clienteResponsavel) {
-        this.clienteResponsavel = clienteResponsavel;
-    }
-
-    public Cliente getClienteDependente() {
-        return clienteDependente;
-    }
-
-    public void setClienteDependente(Cliente clienteDependente) {
-        this.clienteDependente = clienteDependente;
+    public void setSocio(Socio socio) {
+        this.socio = socio;
     }
 }

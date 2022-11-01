@@ -43,6 +43,7 @@ public class Locacao implements Serializable {
     private BigDecimal multaCobrada;
 
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "ID_CLIENTE")
     private Cliente cliente;
 
