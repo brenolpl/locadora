@@ -2,10 +2,14 @@ package com.locadoar.backend.domain;
 
 import com.sun.istack.NotNull;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import java.util.Set;
 
 @Entity
 @Table(name = "SOCIO")
@@ -22,6 +26,9 @@ public class Socio extends Cliente{
     @NotNull
     @Column(name = "TEL", length = 11)
     private String telefone;
+
+    @OneToMany(mappedBy = "socio", orphanRemoval = true, cascade = CascadeType.ALL)
+    private Set<Dependente> dependentes;
 
     public String getCpf() {
         return cpf;
@@ -45,5 +52,13 @@ public class Socio extends Cliente{
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public Set<Dependente> getDependentes() {
+        return dependentes;
+    }
+
+    public void setDependentes(Set<Dependente> dependentes) {
+        this.dependentes = dependentes;
     }
 }
