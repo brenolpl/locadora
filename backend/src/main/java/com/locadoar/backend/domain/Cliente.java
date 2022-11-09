@@ -46,4 +46,52 @@ public class Cliente implements Serializable {
     @NotNull
     @Column(name = "IS_ATIVO", nullable = false)
     private boolean isAtivo;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNumInscricao() {
+        return numInscricao;
+    }
+
+    public void setNumInscricao(String numInscricao) {
+        this.numInscricao = numInscricao;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public boolean isAtivo() {
+        return isAtivo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        isAtivo = ativo;
+    }
 }
