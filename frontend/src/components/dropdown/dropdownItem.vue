@@ -1,13 +1,13 @@
 <template>
     <li>
-        <div class="dropdown-item">
+        <div class="dropdown-item" @click="closeDropdown">
             <slot></slot>
         </div>
     </li>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, inject } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
@@ -17,6 +17,10 @@ export default defineComponent({
         link:String
     },
     setup(props) {
+        const dropdown = inject("dropdown");
+        const closeDropdown = () => {
+            dropdown?.toogle();
+        }
         const target = ref(props.target);
         const link = ref(props.link);
         const router = useRouter();
@@ -24,7 +28,7 @@ export default defineComponent({
             const routerData = ref(router.resolve({name:link.value}));
             window.open(routerData.value.href, target.value);
         }
-        return {redirect};
+        return {redirect, closeDropdown};
     },
 })
 </script>
