@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -46,6 +47,11 @@ public class Locacao implements Serializable {
     @NotNull
     @JoinColumn(name = "ID_CLIENTE")
     private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_ITEM", nullable = false)
+    @NotNull
+    private Item item;
 
     public Integer getId() {
         return id;
@@ -101,5 +107,13 @@ public class Locacao implements Serializable {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 }

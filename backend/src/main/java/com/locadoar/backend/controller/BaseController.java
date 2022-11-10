@@ -24,22 +24,22 @@ public abstract class BaseController<DOMAIN, REPOSITORY extends JpaRepository<DO
     }
 
     @GetMapping("{id}")
-    public Optional<DOMAIN> getById(@PathVariable Integer id) {
+    protected Optional<DOMAIN> getById(@PathVariable Integer id) {
         return repository.findById(id);
     }
 
     @GetMapping("list")
-    public List<DOMAIN> list() {
+    protected List<DOMAIN> list() {
         return repository.findAll();
     }
 
     @PostMapping("save")
-    public DOMAIN persist(@RequestBody DOMAIN body) {
+    protected DOMAIN persist(@RequestBody DOMAIN body) {
         return repository.save(body);
     }
 
     @DeleteMapping("delete")
-    public void delete(@RequestParam Integer id) {
+    protected void delete(@RequestParam Integer id) {
         repository.deleteById(id);
     }
 }
