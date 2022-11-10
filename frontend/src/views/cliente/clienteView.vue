@@ -20,7 +20,7 @@
                 </tbody>
             </my-table>
         </div>
-        <ClienteForm :open="isOpen" @close="resetForm" @saved="refreshList" :editedId="editedId"/>
+        <ClienteForm :open="isOpen" @close="cancelChange" @saved="refreshList" :editedId="editedId"/>
     </main>
 </template>
 
@@ -55,14 +55,14 @@ export default defineComponent({
             getAll();
         }
 
-        const resetForm = () => {
-            resetEntity();
+        const cancelChange = () => {
             isOpen.value = !isOpen.value;
+            editedId.value = 0;
         }
 
         onMounted(getAll);
 
-        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit, resetForm}
+        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit, cancelChange}
     },
 })
 </script>

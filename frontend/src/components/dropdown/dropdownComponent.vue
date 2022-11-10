@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, toRef } from 'vue';
+import { defineComponent, ref, toRef, provide } from 'vue';
 
 export default defineComponent({
     name:"AppDropdown",
@@ -28,11 +28,9 @@ export default defineComponent({
         }
     },
     setup(props) {
-        
-        const title = ref(props.title);
         const isOpen = ref(false);
         const toogle = () =>{ isOpen.value = !isOpen.value;}
-
+        provide('olaMundo', 'Ola mundo');
         return { toogle, isOpen }
     },
 })

@@ -20,7 +20,7 @@
                 </tbody>
             </my-table>
         </div>
-        <ItemForm :open="isOpen" @close="isOpen = !isOpen" @saved="refreshList" :editedId="editedId"/>
+        <ItemForm :open="isOpen" @close="cancelChange" @saved="refreshList" :editedId="editedId"/>
     </main>
 </template>
 
@@ -50,6 +50,11 @@ export default defineComponent({
             await getAll();
         }
 
+        const cancelChange = () => {
+            isOpen.value = !isOpen.value;
+            editedId.value = 0;
+        }
+
         const refreshList = async () => {
             isOpen.value = false;
             getAll();
@@ -57,7 +62,7 @@ export default defineComponent({
 
         onMounted(getAll);
 
-        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit}
+        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit, cancelChange}
     },
 })
 </script>

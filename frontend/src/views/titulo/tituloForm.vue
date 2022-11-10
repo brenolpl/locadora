@@ -4,7 +4,7 @@
             <form v-on:submit.prevent="formSave">
                 <modal-header>
                     Inserir Titulo
-                    <button type="button" class="btn-close" @click="$emit('close')"></button>
+                    <button type="button" class="btn-close" @click="closeModal"></button>
                 </modal-header>
                 <modal-body class="d-flex align-items-center flex-wrap gap-3">
                     <div class="col-md-7 col-xxl-9 form-floating mb-3">
@@ -37,22 +37,22 @@
                         <DiretorSelect @changeSelect="addDiretor" :value="entity.diretor?.id" />
                     </div>
                     <div class="col-sm-6">
-                        <a class="btn btn-primary fw-bold" @click="openModalAtor = true">Adicionar Atores</a>
+                        <a class="btn btn-primary fw-bold" @click="openModalAtor">Adicionar Atores</a>
                     </div>
                 </modal-body>
                 <modal-footer>
-                    <button class="btn btn-outline-danger" type="button" @click="$emit('close')">Cancelar</button>
+                    <button class="btn btn-outline-danger" type="button" @click="closeModal">Cancelar</button>
                     <button class="btn btn-primary" type="submit">Salvar</button>
                 </modal-footer>
             </form>
         </my-modal>
     </transition>
-    <AtorModalComponent :actorsSelected="entity.atores" :open="openModalAtor" @close="openModalAtor = !openModalAtor" @saved="addAtor"/>
+    <AtorModalComponent :actorsSelected="entity.atores" :open="modalAtor" @close="modalAtor = !openModalAtor" @saved="addAtor"/>
 
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, watch } from 'vue';
+import {defineComponent, provide, ref, watch } from 'vue';
 
 import useRequests from '@/composables/requests';
 import Titulo from '@/models/titulo';
@@ -75,11 +75,18 @@ export default defineComponent({
     emits: ["saved", "close"],
     setup(props, { emit }) {
 
-        const { erros, save, getById, entity } = useRequests(Titulo);
+        const { erros, save, getById, entity, resetEntity } = useRequests(Titulo);
 
         const classificacao = ref();
 
-        const openModalAtor = ref(false);
+        const modalAtor = ref(false);
+
+        const openModalAtor = () => {
+            console.log("🚀 ~ file: tituloForm.vue ~ line 86 ~ openModalAtor ~ entity.value.atores", entity.value)
+            modalAtor.value = true;
+        }
+
+        provide("selectedActors", entity.value.atores);
 
         const formSave = async () => {
             await save(entity.value);
@@ -92,9 +99,14 @@ export default defineComponent({
             emit("saved");
         };
 
+        const closeModal = () =>{
+            resetEntity();
+            emit('close');
+        }
+
         const addAtor = (atoresList:any) => {
             entity.value.atores = atoresList;
-            openModalAtor.value = !openModalAtor.value;
+            modalAtor.value = !modalAtor.value;
         }
 
         const addDiretor = (director:any) => {
@@ -106,7 +118,7 @@ export default defineComponent({
         }
 
         watch(() => props.editedId, (newVal) => {
-            getById(newVal);
+            if(newVal != 0) getById(newVal);
         });
 
         return {
@@ -117,7 +129,9 @@ export default defineComponent({
             addDiretor,
             addClasse,
             classificacao,
-            openModalAtor
+            openModalAtor,
+            modalAtor,
+            closeModal
         };
     },
     components: { AtorModalComponent, DiretorSelect, ClasseSelect }

@@ -4,7 +4,7 @@
             ...
         </a>
         <transition>
-            <ul id="dropdownList" class="bg-white" v-show="isOpen">
+            <ul ref="dropdown" id="dropdownList" class="bg-white" v-show="isOpen">
                 <slot></slot>
             </ul>
         </transition>
@@ -12,15 +12,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, toRef } from 'vue';
+import { defineComponent, onMounted, provide, ref, toRef } from 'vue';
 
 export default defineComponent({
     name:"ActionDropdown",
     setup() {
+
         const isOpen = ref(false);
+
         const toogle = () =>{ isOpen.value = !isOpen.value;}
 
-        return { toogle, isOpen }
+        provide("dropdown", { toogle });
+
+        const dropdown = ref(null)
+        const clickOutListener = (evt:any) => { if(!dropdown.value?.contains(evt.target)) isOpen.value = false };
+        onMounted(()=>{ document.addEventListener("click", clickOutListener) });
+
+        return { toogle, isOpen, dropdown }
     },
 })
 </script>

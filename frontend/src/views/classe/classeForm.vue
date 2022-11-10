@@ -4,7 +4,7 @@
             <form v-on:submit.prevent="formSave">
                 <modal-header>
                     Inserir Classe
-                    <button type="button" class="btn-close" @click="$emit('close')"></button>
+                    <button type="button" class="btn-close" @click="closeModal"></button>
                 </modal-header>
                 <modal-body class="d-flex align-items-center flex-wrap gap-3">
                     <div class="form-floating mb-3 col-sm-12">
@@ -21,7 +21,7 @@
                     </div>
                 </modal-body>
                 <modal-footer>
-                    <button class="btn btn-outline-danger" type="button" @click="$emit('close')">Cancelar</button>
+                    <button class="btn btn-outline-danger" type="button" @click="closeModal">Cancelar</button>
                     <button class="btn btn-primary" type="submit">Salvar</button>
                 </modal-footer>
             </form>
@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, toRef, toRefs, watch } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 
 import useRequests from '@/composables/requests';
 import Classe from '@/models/classe';
@@ -50,7 +50,7 @@ export default defineComponent({
     emits:['saved', 'close'],
     setup(props,{emit}) {
 
-        const { erros, save, getById, entity } = useRequests(Classe);
+        const { erros, save, getById, entity, resetEntity } = useRequests(Classe);
 
         const isOpen = ref(false);
 
@@ -59,62 +59,22 @@ export default defineComponent({
             emit('saved');
         }
 
+        const closeModal = () =>{
+            resetEntity();
+            emit('close');
+        }
+
         watch(()=>props.editedId, (newVal) => {
-            getById(newVal);
+            if(newVal != 0) getById(newVal);
         });
 
         return {
             entity,
             erros,
             formSave,
-            isOpen
+            isOpen,
+            closeModal
         }     
     },
 })
 </script>
-
-<style>
-    .my-modal{
-        position:fixed;
-        top:0;
-        left:0;
-        height: 100%;
-        width: 100%;
-        background-color: rgba(0,0,0,0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-    }
-
-    .my-modal-inner{
-        background-color: #fff;
-        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-        padding: 2rem;
-    }
-
-    .my-modal-footer{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-    }
-
-    .my-modal-header{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 1rem;
-    }
-
-    .my-modal-body{
-        margin-bottom: 1rem;
-    }
-
-    .v-enter-active, .v-leave-active {
-        transition: opacity 0.3s ease;
-    }
-    .v-enter-from, .v-leave-to {
-        opacity: 0;
-    }
-</style>

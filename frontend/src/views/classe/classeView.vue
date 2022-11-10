@@ -20,7 +20,7 @@
                 </tbody>
             </my-table>
         </div>
-        <ClasseForm :open="isOpen" @close="isOpen = !isOpen" @saved="refreshList" :editedId="editedId"/>
+        <ClasseForm :open="isOpen" @close="cancelChange" @saved="refreshList" :editedId="editedId"/>
     </main>
 </template>
 
@@ -44,6 +44,11 @@ export default defineComponent({
             isOpen.value = true;
         }
 
+        const cancelChange = () => {
+            isOpen.value = !isOpen.value;
+            editedId.value = 0;
+        }
+
         const deleteElement = async (id:any) => {
             if(!window.confirm("Tem certeza que deseja excluir o ator?")) return;
             await destroy(id);
@@ -57,7 +62,7 @@ export default defineComponent({
 
         onMounted(getAll);
 
-        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit}
+        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit, cancelChange}
     },
 })
 </script>

@@ -10,18 +10,18 @@
                     <th>Nome</th>
                 </my-thead>
                 <tbody>
-                    <my-tr v-for="(diretor, i) in entities" :key="i" :id="diretor.id" :table="'diretor'" @delete="deleteElement(diretor.id)" @edit="showFormEdit(diretor.id)">
+                    <my-tr v-for="(diretor, i) in entities" :key="i" :id="diretor.id" @delete="deleteElement(diretor.id)" @edit="showFormEdit(diretor.id)">
                         <td>{{diretor.nome}}</td>
                     </my-tr>
                 </tbody>
             </my-table>
         </div>
-        <DiretorForm :open="isOpen" @close="isOpen = !isOpen" @saved="refreshList" :editedId="editedId"/>
+        <DiretorForm :open="isOpen" @close="cancelChange" @saved="refreshList" :editedId="editedId" />
     </main>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onMounted, ref, provide, computed } from 'vue'
 import DiretorForm from './diretorForm.vue';
 import useRequests from '@/composables/requests';
 import Diretor from '@/models/diretor';
@@ -33,10 +33,19 @@ export default defineComponent({
 
         const { entities, getAll, destroy } = useRequests(Diretor);
         const isOpen = ref(false);
+
         const editedId = ref(0);
+        const updateId = (newId:number) => {
+            editedId.value = newId;
+        };
+
+        const cancelChange = () => {
+            isOpen.value = !isOpen.value;
+            editedId.value = 0;
+        }
 
         function showFormEdit(id:any){
-            editedId.value = id;
+            updateId(id);
             isOpen.value = true;
         }
 
@@ -53,7 +62,7 @@ export default defineComponent({
 
         onMounted(getAll);
 
-        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit}
+        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit, cancelChange}
     },
 })
 </script>
