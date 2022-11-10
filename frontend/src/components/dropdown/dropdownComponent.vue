@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, toRef, provide } from 'vue';
+import { defineComponent, ref, provide } from 'vue';
 
 export default defineComponent({
     name:"AppDropdown",

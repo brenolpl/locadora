@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, watch } from 'vue';
+import {defineComponent, ref, watch, inject } from 'vue';
 
 import useRequests from '@/composables/requests';
 import Ator from '@/models/ator';
@@ -71,6 +71,8 @@ export default defineComponent({
             emit('saved', atores.value);
         }
 
+        const selectedActors =  inject("selectedActors", {});
+
         const adicionarAtor = (ator:any) => {
             atores.value.push(ator);
             const addButton = document.getElementById('addButton-'+ator.id);
@@ -90,6 +92,10 @@ export default defineComponent({
 
         watch(() => props.open, (newVal) => {
             if(newVal) getAll();
+        });
+
+        watch(() => selectedActors?.value, (newVal) => {
+            console.log("🚀 ~ file: atorModalComponent.vue ~ line 101 ~ watch ~  selectedActors.valu",  selectedActors.value)
         });
 
         return {
