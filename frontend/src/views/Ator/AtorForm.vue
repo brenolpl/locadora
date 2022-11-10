@@ -4,7 +4,7 @@
             <form v-on:submit.prevent="formSave">
                 <modal-header>
                     Inserir Ator
-                    <button type="button" class="btn-close" @click="$emit('close')"></button>
+                    <button type="button" class="btn-close" @click="closeModal"></button>
                 </modal-header>
                 <modal-body>
                     <div class="form-floating mb-3">
@@ -13,7 +13,7 @@
                     </div>
                 </modal-body>
                 <modal-footer>
-                    <button class="btn btn-outline-danger" type="button" @click="$emit('close')">Cancelar</button>
+                    <button class="btn btn-outline-danger" type="button" @click="closeModal">Cancelar</button>
                     <button class="btn btn-primary" type="submit">Salvar</button>
                 </modal-footer>
             </form>
@@ -44,7 +44,7 @@ export default defineComponent({
     emits:['saved', 'close'],
     setup(props,{emit}) {
 
-        const { erros, save, getById, entity } = useRequests(Ator);
+        const { erros, save, getById, entity, resetEntity } = useRequests(Ator);
 
         const isOpen = ref(false);
 
@@ -59,15 +59,21 @@ export default defineComponent({
             emit('saved');
         }
 
+        const closeModal = () =>{
+            resetEntity();
+            emit('close');
+        }
+
         watch(()=>props.editedId, (newVal) => {
-            getById(newVal);
+            if(newVal != 0) getById(newVal);
         });
 
         return {
             entity,
             erros,
             formSave,
-            isOpen
+            isOpen,
+            closeModal
         }   
     },
 })
