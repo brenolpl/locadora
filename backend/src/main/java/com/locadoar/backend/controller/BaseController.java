@@ -15,8 +15,8 @@ import java.util.Optional;
 
 @RestController
 public abstract class BaseController<DOMAIN, REPOSITORY extends JpaRepository<DOMAIN, Integer>> {
-    private Class domainClass;
-    private REPOSITORY repository;
+    protected Class domainClass;
+    protected REPOSITORY repository;
 
     public BaseController(Class domainClass, REPOSITORY repository) {
         this.domainClass = domainClass;
