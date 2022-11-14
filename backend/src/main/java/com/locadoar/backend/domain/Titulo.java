@@ -115,4 +115,12 @@ public class Titulo implements Serializable {
     public void setClassificacao(Classificacao classificacao) {
         this.classificacao = classificacao;
     }
+
+    public Set<Ator> getAtores() {
+        return atores;
+    }
+
+    public void setAtores(Set<Ator> atores) {
+        this.atores = atores;
+    }
 }
