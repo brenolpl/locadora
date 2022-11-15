@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class Dependente extends Cliente {
 
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(cascade = CascadeType.MERGE, optional = false)
     @JoinColumn(name = "ID_SOCIO", nullable = false)
     private Socio socio;
 

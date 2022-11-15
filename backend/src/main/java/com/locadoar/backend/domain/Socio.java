@@ -27,7 +27,7 @@ public class Socio extends Cliente{
     @Column(name = "TEL", length = 11)
     private String telefone;
 
-    @OneToMany(mappedBy = "socio", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "socio", orphanRemoval = true, cascade = CascadeType.MERGE)
     private Set<Dependente> dependentes;
 
     public String getCpf() {

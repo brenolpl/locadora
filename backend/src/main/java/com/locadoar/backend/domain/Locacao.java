@@ -32,7 +32,7 @@ public class Locacao implements Serializable {
     @Column(name = "DT_DEVOLUCAO_PREVISTA")
     private Timestamp dtDevolucaoPrevista;
 
-    @Column(name = "DT_DEVOLUCAO_EVETIVA")
+    @Column(name = "DT_DEVOLUCAO_EFETIVA")
     private Timestamp dtDevolucaoEfetiva;
 
     @NotNull
