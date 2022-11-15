@@ -17,7 +17,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "AUTOR")
+@Table(name = "ATOR")
 public class Ator implements Serializable {
 
     @Id
@@ -28,9 +28,6 @@ public class Ator implements Serializable {
     @NotNull
     @Column(name = "NOME", nullable = false)
     private String nome;
-
-    @ManyToMany(mappedBy = "atores", fetch = FetchType.LAZY)
-    private Set<Titulo> titulos;
 
     public Integer getId() {
         return id;
