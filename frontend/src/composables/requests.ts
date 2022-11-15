@@ -20,6 +20,7 @@ export default function useRequests<T extends Flex>(type: { new(): T ;}){
     const getById = async (id:any) => {
         const response = await api.get(path + id );
         entity.value = response.data;
+        console.log("🚀 ~ file: requests.ts ~ line 23 ~ getById ~ entity.value", entity.value)
     }
 
     const destroy = async (id:any) => {

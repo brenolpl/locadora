@@ -16,8 +16,8 @@
                         <label for="inscricao" class="form-label">N° Inscrição</label>
                     </div>
                     <div class="form-floating mb-3 col-xl-5">
-                        <input type="datetime-local" name="nascimento" id="nascimento" class="form-control" v-model="entity.date" placeholder="xx/xx/xxxx" required>
-                        <label for="nome" class="form-label">Data de Nascimento</label>
+                        <input type="date" name="nascimento" id="nascimento" class="form-control" v-model="entity.date" placeholder="xx/xx/xxxx" required>
+                        <label for="nome" class="form-label">Nascimento</label>
                     </div>
                     <div class="mb-3 col-xl-5">
                         <div class="form-check">
@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, watch } from 'vue';
+import {defineComponent, provide, ref, watch } from 'vue';
 
 import useRequests from '@/composables/requests';
 import DependenteModalComponent from '../../components/dependenteModal/dependenteModalComponent.vue';
@@ -84,6 +84,8 @@ export default defineComponent({
             resetEntity();
             emit('close');
         }
+
+        provide("selectedDependents", entity.value);
 
         const addDependente = (dependentesList:any) => {
             entity.value.dependentes = dependentesList;

@@ -21,7 +21,7 @@ public class Locacao implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_ATOR")
+    @Column(name = "ID_LOCACAO")
     private Integer id;
 
     @NotNull

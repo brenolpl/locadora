@@ -21,7 +21,7 @@
                                             <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
                                         </svg>
                                     </a>
-                                    <a href="javascript:void(0);" class="btn btn-danger py-1 px-2 d-none" @click="removerCliente(cliee)" :id="'rmvButton-'+cliente.id">
+                                    <a href="javascript:void(0);" class="btn btn-danger py-1 px-2 d-none" @click="removerCliente(cliente)" :id="'rmvButton-'+cliente.id">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                                             <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
                                         </svg>
@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, watch, inject } from 'vue';
+import {defineComponent, ref, watch, inject, onMounted } from 'vue';
 
 import useRequests from '@/composables/requests';
 import Cliente from '@/models/cliente';
@@ -52,10 +52,6 @@ export default defineComponent({
         open:{
             type:Boolean,
             required:true
-        },
-        editedId:{
-            type:Number,
-            default:0
         }
     },
     emits:['saved', 'close'],
@@ -66,6 +62,8 @@ export default defineComponent({
         const openModalDependente = ref(false);
 
         const clientes = ref([]);
+
+        const selectedDependents = inject("selectedDependents", []);
 
         const formSave = async () => {
             emit('saved', clientes.value);
@@ -91,7 +89,10 @@ export default defineComponent({
         }
 
         watch(() => props.open, (newVal) => {
-            if(newVal) getAll();
+            if(newVal){
+                console.log("🚀 ~ file: dependenteModalComponent.vue ~ line 67 ~ setup ~ selectedDependents", selectedDependents)
+                getAll();
+            }
         });
 
         watch(() => selectedClients?.value, (newVal) => {
