@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface IClienteRepository extends JpaRepository<Cliente, Integer> {
 
-    List<Cliente> findClienteByAtivo(boolean ativo);
+    List<Cliente> findClienteByIsAtivo(boolean ativo);
 }
