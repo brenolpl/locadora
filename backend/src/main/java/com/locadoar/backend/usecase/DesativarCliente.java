@@ -9,13 +9,12 @@ import java.util.Optional;
 public class DesativarCliente {
 
     private Integer id;
-
-    public DesativarCliente(Integer id) {
-        this.id = id;
-    }
-
-    @Autowired
     private IClienteRepository clienteRepository;
+
+    public DesativarCliente(Integer id, IClienteRepository clienteRepository) {
+        this.id = id;
+        this.clienteRepository = clienteRepository;
+    }
 
     public void execute() {
         Optional<Cliente> cliente = clienteRepository.findById(id);

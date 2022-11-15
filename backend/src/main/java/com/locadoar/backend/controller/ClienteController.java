@@ -19,7 +19,7 @@ public class ClienteController extends BaseController<Cliente, IClienteRepositor
 
     @Override
     protected void delete(Integer id) {
-        new DesativarCliente(id).execute();
+        new DesativarCliente(id, repository).execute();
     }
 
     @GetMapping("listarAtivos")
