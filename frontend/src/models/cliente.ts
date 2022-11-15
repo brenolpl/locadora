@@ -6,7 +6,7 @@ export default class Cliente extends Flex{
     date: Date;
     sexo:string;
     dependentes:Array<Cliente>;
-    isAtivo:boolean
+    ativo:boolean
 
     constructor() {
         super("/cliente/");
@@ -15,7 +15,7 @@ export default class Cliente extends Flex{
         this.date = new Date();
         this.sexo = "";
         this.dependentes = new Array<Cliente>();
-        this.isAtivo = true;
+        this.ativo = true;
     }
 
 }

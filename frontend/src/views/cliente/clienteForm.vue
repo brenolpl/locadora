@@ -33,6 +33,11 @@
                             </label>
                         </div>
                     </div>
+
+                    <div class="col-sm-12">
+                        <a class="btn btn-primary fw-bold" @click="modalDependente = true">Adicionar Dependentes</a>
+                    </div>
+
                 </modal-body>
                 <modal-footer>
                     <button class="btn btn-outline-danger" type="button" @click="closeModal">Cancelar</button>
@@ -41,12 +46,14 @@
             </form>
         </my-modal>
     </transition>
+    <DependenteModalComponent :open="modalDependente" @close="modalDependente = !modalDependente" @saved="addDependente"/>
 </template>
 
 <script lang="ts">
 import {defineComponent, ref, watch } from 'vue';
 
 import useRequests from '@/composables/requests';
+import DependenteModalComponent from '../../components/dependenteModal/dependenteModalComponent.vue';
 import Swal from 'sweetalert2';
 import Cliente from '@/models/cliente';
 export default defineComponent({
@@ -61,6 +68,7 @@ export default defineComponent({
             default: 0
         }
     },
+    components: { DependenteModalComponent },
     emits: ["saved", "close"],
     setup(props, { emit }) {
 
@@ -68,11 +76,18 @@ export default defineComponent({
 
         const classificacao = ref();
 
-        const openModalAtor = ref(false);
+        const openModalCliente = ref(false);
+
+        const modalDependente = ref(false);
 
         const closeModal = () =>{
             resetEntity();
             emit('close');
+        }
+
+        const addDependente = (dependentesList:any) => {
+            entity.value.dependentes = dependentesList;
+            modalDependente.value = !modalDependente.value;
         }
 
         const formSave = async () => {
@@ -95,8 +110,10 @@ export default defineComponent({
             erros,
             formSave,
             classificacao,
-            openModalAtor,
-            closeModal
+            openModalCliente,
+            modalDependente,
+            closeModal,
+            addDependente
         };
     },
 })

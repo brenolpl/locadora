@@ -12,7 +12,8 @@ export default function useRequests<T extends Flex>(type: { new(): T ;}){
     const path = entity.value.path;
 
     const getAll = async () => {
-        const response = await api.get(path + "list")
+        const endpoint = path === "/cliente/" ? "listarAtivos" : "list";
+        const response = await api.get(path + endpoint);
         entities.value = response.data;
     }
 
