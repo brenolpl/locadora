@@ -1,5 +1,6 @@
 package com.locadoar.backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 
 import javax.persistence.CascadeType;
@@ -28,6 +29,7 @@ public class Socio extends Cliente{
     private String telefone;
 
     @OneToMany(mappedBy = "socio", orphanRemoval = true, cascade = CascadeType.MERGE)
+    @JsonManagedReference
     private Set<Dependente> dependentes;
 
     public String getCpf() {
