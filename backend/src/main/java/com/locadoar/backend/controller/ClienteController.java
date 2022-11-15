@@ -24,6 +24,6 @@ public class ClienteController extends BaseController<Cliente, IClienteRepositor
 
     @GetMapping("listarAtivos")
     public List<Cliente> listarAtivos() {
-        return repository.findClienteByAtivo(true);
+        return repository.findClienteByIsAtivo(true);
     }
 }
