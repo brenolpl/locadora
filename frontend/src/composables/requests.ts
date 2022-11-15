@@ -35,6 +35,7 @@ export default function useRequests<T extends Flex>(type: { new(): T ;}){
         entity.value = new type() }
 
     const save = async (data:any) => {
+        console.log("🚀 ~ file: requests.ts ~ line 38 ~ save ~ data", data)
         erros.value = '';
         try{
             await api.post(path + "save", data);

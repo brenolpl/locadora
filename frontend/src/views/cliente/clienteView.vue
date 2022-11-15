@@ -12,7 +12,7 @@
                     <th class="col-sm-4">Data Nascimento</th>
                 </my-thead>
                 <tbody>
-                    <my-tr v-for="(cliente, i) in entities" :key="i" :id="cliente.id" :table="'classe'" @delete="deleteElement(cliente.id)" @edit="showFormEdit(cliente.id)">
+                    <my-tr v-for="(cliente, i) in entities" :key="i" :id="cliente.id" :table="'classe'" @delete="deleteElement(cliente.id)" @edit="showFormEdit(cliente)">
                         <td>{{cliente.nome}}</td>
                         <td>{{cliente.numInscricao}}</td>
                         <td>{{cliente.date || ''}}</td>
@@ -20,7 +20,7 @@
                 </tbody>
             </my-table>
         </div>
-        <ClienteForm :open="isOpen" @close="cancelChange" @saved="refreshList" :editedId="editedId"/>
+        <ClienteForm :open="isOpen" @close="cancelChange" @saved="refreshList" :editedClient="editedClient"/>
     </main>
 </template>
 
@@ -37,10 +37,10 @@ export default defineComponent({
 
         const { entities, getAll, destroy, resetEntity } = useRequests(Cliente);
         const isOpen = ref(false);
-        const editedId = ref(0);
+        const editedClient = ref({});
 
-        function showFormEdit(id:any){
-            editedId.value = id;
+        function showFormEdit(client:any){
+            editedClient.value = id;
             isOpen.value = true;
         }
 
@@ -57,12 +57,12 @@ export default defineComponent({
 
         const cancelChange = () => {
             isOpen.value = !isOpen.value;
-            editedId.value = 0;
+            editedClient.value = {};
         }
 
         onMounted(getAll);
 
-        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit, cancelChange}
+        return {isOpen, entities, getAll, refreshList, deleteElement, editedClient, showFormEdit, cancelChange}
     },
 })
 </script>
