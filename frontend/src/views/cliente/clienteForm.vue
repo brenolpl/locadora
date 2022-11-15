@@ -34,8 +34,43 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-12">
-                        <a class="btn btn-primary fw-bold" @click="modalDependente = true">Adicionar Dependentes</a>
+                    <div class="col-sm-12 d-flex align-items-center justify-content-center mb-5">
+                        <div>
+                            <input type="radio" class="btn-check" name="checkType" id="checkSocio" @change="toggleSocio" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="checkSocio">Sou um sócio</label><br>
+                        </div>
+                        <div>
+                            <input type="radio" class="btn-check" name="checkType" id="checkDependente" @change="toggleDependente" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="checkDependente">Sou um dependente</label><br>
+                        </div>
+                    </div>
+
+                    <div class="mb-5 col-sm-12">
+                        <fieldset id="socioInformation" class="d-none col-sm-12 d-flex flex-wrap gap-3">
+                            <legend class="small">Preencha também estas informações</legend>
+                            <div class="col-md-5 form-floating mb-3">
+                                <input type="text" name="cpf" id="cpf" class="form-control" v-model="entity.cpf" placeholder="cpf" >
+                                <label for="cpf" class="form-label">CPF</label>
+                            </div>
+
+                            <div class="col-md-5 form-floating mb-3">
+                                <input type="tel" name="telefone" id="telefone" class="form-control" v-model="entity.telefone" placeholder="telefone" >
+                                <label for="telefone" class="form-label">Telefone</label>
+                            </div>
+
+                            <div class="col-sm-12 form-floating mb-3">
+                                <input type="text" name="endereco" id="endereco" class="form-control" v-model="entity.endereco" placeholder="endereco" >
+                                <label for="endereco" class="form-label">Endereço</label>
+                            </div>
+
+
+                        </fieldset>
+                        
+                        <fieldset id="dependenteInformation" class="d-none col-sm-12">
+                            <legend class="small mb-5">Preencha também estas informações</legend>
+                            <label for="selectSocio">Selecione um sócio</label>
+                            <SocioSelect @changeSelect="addSocio" :value="entity.socio?.id"/>
+                        </fieldset>
                     </div>
 
                 </modal-body>
@@ -46,16 +81,17 @@
             </form>
         </my-modal>
     </transition>
-    <DependenteModalComponent :open="modalDependente" @close="modalDependente = !modalDependente" @saved="addDependente"/>
 </template>
 
 <script lang="ts">
-import {defineComponent, provide, ref, watch } from 'vue';
+import {defineComponent, ref, watch } from 'vue';
 
 import useRequests from '@/composables/requests';
-import DependenteModalComponent from '../../components/dependenteModal/dependenteModalComponent.vue';
 import Swal from 'sweetalert2';
 import Cliente from '@/models/cliente';
+import Socio from '@/models/cliente';
+import SocioSelect from '@/components/socioSelect/socioSelectComponent.vue';
+import Dependente from '@/models/dependente';
 export default defineComponent({
     name: "ClienteForm",
     props: {
@@ -63,16 +99,18 @@ export default defineComponent({
             type: Boolean,
             required: true
         },
-        editedId: {
-            type: Number,
-            default: 0
+        editedClient: {
+            type: Object,
+            default: new Socio()
         }
     },
-    components: { DependenteModalComponent },
+    components: { SocioSelect },
     emits: ["saved", "close"],
     setup(props, { emit }) {
 
-        const { erros, save, getById, entity, resetEntity } = useRequests(Cliente);
+        const { erros, save, getById, entity, resetEntity } = useRequests(
+            props.editedClient.constructor.name === "Socio" ? Socio : Dependente
+        );
 
         const classificacao = ref();
 
@@ -80,19 +118,47 @@ export default defineComponent({
 
         const modalDependente = ref(false);
 
+        const toggleSocio = () => {
+
+            const checkSocio = document.getElementById("checkSocio");
+
+            const dependenteInformation = document.getElementById("dependenteInformation");
+            const socioInformation = document.getElementById("socioInformation");
+
+            if(checkSocio?.checked){
+                if(!dependenteInformation?.classList.contains("d-none")) dependenteInformation?.classList.add("d-none");
+                socioInformation?.classList.toggle("d-none");
+            }
+            else socioInformation?.classList.add("d-none");
+        }
+
+        const toggleDependente = () => {
+
+            const checkDependente = document.getElementById("checkDependente");
+
+            const dependenteInformation = document.getElementById("dependenteInformation");
+            const socioInformation = document.getElementById("socioInformation");
+
+            if(checkDependente?.checked){
+                socioInformation?.classList.add("d-none");
+                dependenteInformation?.classList.remove("d-none");
+            }
+
+            else dependenteInformation?.classList.add("d-none");
+
+        }
+
         const closeModal = () =>{
             resetEntity();
             emit('close');
         }
 
-        provide("selectedDependents", entity.value);
-
-        const addDependente = (dependentesList:any) => {
-            entity.value.dependentes = dependentesList;
-            modalDependente.value = !modalDependente.value;
+        const addSocio = (socio:any) => {
+            entity.value.socio = socio;
         }
 
         const formSave = async () => {
+            document.querySelectorAll("input[type=radio]:checked").checked = false;
             await save(entity.value);
             Swal.fire({
                 icon: 'success',
@@ -115,7 +181,9 @@ export default defineComponent({
             openModalCliente,
             modalDependente,
             closeModal,
-            addDependente
+            addSocio,
+            toggleSocio,
+            toggleDependente
         };
     },
 })
