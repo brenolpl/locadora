@@ -34,17 +34,6 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-12 d-flex align-items-center justify-content-center mb-5">
-                        <div>
-                            <input type="radio" class="btn-check" name="checkType" id="checkSocio" @change="toggleSocio" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="checkSocio">Sou um sócio</label><br>
-                        </div>
-                        <div>
-                            <input type="radio" class="btn-check" name="checkType" id="checkDependente" @change="toggleDependente" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="checkDependente">Sou um dependente</label><br>
-                        </div>
-                    </div>
-
                     <div class="mb-5 col-sm-12">
                         <fieldset id="socioInformation" class="d-none col-sm-12 d-flex flex-wrap gap-3">
                             <legend class="small">Preencha também estas informações</legend>
@@ -65,12 +54,7 @@
 
 
                         </fieldset>
-                        
-                        <fieldset id="dependenteInformation" class="d-none col-sm-12">
-                            <legend class="small mb-5">Preencha também estas informações</legend>
-                            <label for="selectSocio">Selecione um sócio</label>
-                            <SocioSelect @changeSelect="addSocio" :value="entity.socio?.id"/>
-                        </fieldset>
+
                     </div>
 
                 </modal-body>
@@ -84,92 +68,41 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, watch } from 'vue';
-
+import { defineComponent, ref, watch } from 'vue'
 import useRequests from '@/composables/requests';
 import Swal from 'sweetalert2';
-import Cliente from '@/models/cliente';
-import Socio from '@/models/cliente';
-import SocioSelect from '@/components/socioSelect/socioSelectComponent.vue';
-import Dependente from '@/models/dependente';
+import Socio from '@/models/socio';
+
 export default defineComponent({
-    name: "ClienteForm",
-    props: {
-        open: {
-            type: Boolean,
-            required: true
+    name:'SocioForm',
+    props:{
+        open:{
+            type:Boolean,
+            required:true
         },
-        editedClient: {
-            type: Object,
-            default: new Socio()
+        editedId:{
+            type:Number,
+            default:0
         }
     },
-    components: { SocioSelect },
-    emits: ["saved", "close"],
-    setup(props, { emit }) {
+    emits:['saved', 'close'],
+    setup(props,{emit}) {
 
-        const { erros, save, getById, entity, resetEntity } = useRequests(
-            props.editedClient.constructor.name === "Socio" ? Socio : Dependente
-        );
+        const { erros, save, getById, entity, resetEntity } = useRequests(Socio);
 
-        const classificacao = ref();
+        const isOpen = ref(false);
 
-        const openModalCliente = ref(false);
-
-        const modalDependente = ref(false);
-
-        const toggleSocio = () => {
-
-            const checkSocio = document.getElementById("checkSocio");
-
-            const dependenteInformation = document.getElementById("dependenteInformation");
-            const socioInformation = document.getElementById("socioInformation");
-
-            if(checkSocio?.checked){
-                if(!dependenteInformation?.classList.contains("d-none")) dependenteInformation?.classList.add("d-none");
-                socioInformation?.classList.toggle("d-none");
-            }
-            else socioInformation?.classList.add("d-none");
+        const formSave = async () => {
+            await save(entity.value);
+            emit('saved');
         }
-
-        const toggleDependente = () => {
-
-            const checkDependente = document.getElementById("checkDependente");
-
-            const dependenteInformation = document.getElementById("dependenteInformation");
-            const socioInformation = document.getElementById("socioInformation");
-
-            if(checkDependente?.checked){
-                socioInformation?.classList.add("d-none");
-                dependenteInformation?.classList.remove("d-none");
-            }
-
-            else dependenteInformation?.classList.add("d-none");
-
-        }
-
+        
         const closeModal = () =>{
             resetEntity();
             emit('close');
         }
 
-        const addSocio = (socio:any) => {
-            entity.value.socio = socio;
-        }
-
-        const formSave = async () => {
-            document.querySelectorAll("input[type=radio]:checked").checked = false;
-            await save(entity.value);
-            Swal.fire({
-                icon: 'success',
-                title: 'Titulo adicionado com sucesso!',
-                showConfirmButton: false,
-                timer: 1500
-            })
-            emit("saved");
-        };
-
-        watch(() => props.editedId, (newVal) => {
+        watch(()=>props.editedId, (newVal) => {
             if(newVal != 0) getById(newVal);
         });
 
@@ -177,14 +110,9 @@ export default defineComponent({
             entity,
             erros,
             formSave,
-            classificacao,
-            openModalCliente,
-            modalDependente,
-            closeModal,
-            addSocio,
-            toggleSocio,
-            toggleDependente
-        };
+            isOpen,
+            closeModal
+        }   
     },
 })
 </script>

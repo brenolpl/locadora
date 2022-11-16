@@ -15,7 +15,7 @@
                     <my-tr v-for="(locacao, i) in entities" :key="i" :id="locacao.id" :table="'classe'" @delete="deleteElement(locacao.id)" @edit="showFormEdit(locacao.id)">
                         <td>{{locacao.item?.titulo?.nome}}</td>
                         <td>{{locacao.cliente?.nome}}</td>
-                        <td>{{locacao.dtLocacao || ''}}</td>
+                        <td>{{formatDate(locacao.dtLocacao)}}</td>
                     </my-tr>
                 </tbody>
             </my-table>
@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onMounted, ref, computed } from 'vue'
 import LocacaoForm from './locacaoForm.vue';
 import useRequests from '@/composables/requests';
 import Locacao from '@/models/locacao';
@@ -55,6 +55,10 @@ export default defineComponent({
             getAll();
         }
 
+        const formatDate = (date:Date) => {
+            return new Date(date).toLocaleString("pt-BR");
+        };
+
         const cancelChange = () => {
             isOpen.value = !isOpen.value;
             editedId.value = 0;
@@ -62,7 +66,17 @@ export default defineComponent({
 
         onMounted(getAll);
 
-        return {isOpen, entities, getAll, refreshList, deleteElement, editedId, showFormEdit, cancelChange}
+        return {
+            isOpen,
+            entities,
+            getAll,
+            refreshList,
+            deleteElement,
+            editedId,
+            showFormEdit,
+            cancelChange,
+            formatDate
+        }
     },
 })
 </script>

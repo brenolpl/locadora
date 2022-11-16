@@ -9,17 +9,17 @@
                 <modal-body class="d-flex align-items-center flex-wrap gap-3">
 
                     <div class="form-floating mb-3 col-xl-5">
-                        <input type="datetime-local" name="dtLocacao" id="dtLocacao" class="form-control" v-model="entity.dtLocacao" placeholder="xx/xx/xxxx" required>
+                        <input type="datetime-local" name="dtLocacao" id="dtLocacao" class="form-control" v-model="entity.dtLocacao" required>
                         <label for="nome" class="form-label">Locação</label>
                     </div>
 
                     <div class="form-floating mb-3 col-xl-5">
-                        <input type="datetime-local" name="dtDevolucaoPrevista" id="dtDevolucaoPrevista" class="form-control" v-model="entity.dtDevolucaoPrevista" placeholder="xx/xx/xxxx" required>
+                        <input type="datetime-local" name="dtDevolucaoPrevista" id="dtDevolucaoPrevista" class="form-control" v-model="entity.dtDevolucaoPrevista" required>
                         <label for="nome" class="form-label">Previsão de Devolução</label>
                     </div>
 
                     <div class="form-floating mb-3 col-xl-5">
-                        <input type="datetime-local" name="dtDevolucaoEfetiva" id="dtDevolucaoEfetiva" class="form-control" v-model="entity.dtDevolucaoEfetiva" placeholder="xx/xx/xxxx" required>
+                        <input type="datetime-local" name="dtDevolucaoEfetiva" id="dtDevolucaoEfetiva" class="form-control" v-model="entity.dtDevolucaoEfetiva" placeholder="xx/xx/xxxx">
                         <label for="nome" class="form-label">Devolução</label>
                     </div>
 
@@ -90,6 +90,10 @@ export default defineComponent({
             emit("saved");
         };
 
+        const formatDate = (date:Date) => {
+            return new Date(date);
+        };
+
         const closeModal = () =>{
             resetEntity();
             emit('close');
@@ -113,7 +117,8 @@ export default defineComponent({
             formSave,
             addItem,
             addCliente,
-            closeModal
+            closeModal,
+            formatDate
         };
     },
 })

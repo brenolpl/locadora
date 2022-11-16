@@ -5,7 +5,8 @@ import ClasseView from '@/views/classe/classeView.vue'
 import DiretorView from '@/views/diretor/diretorView.vue'
 import TituloView from '@/views/titulo/tituloView.vue'
 import ItemView from '@/views/item/itemView.vue'
-import ClienteView from '@/views/cliente/clienteView.vue'
+import SocioView from '@/views/socio/socioView.vue'
+import DependenteView from '@/views/dependente/dependenteView.vue'
 import LocacaoView from '@/views/locacao/locacaoView.vue'
 
 const router = createRouter({
@@ -42,9 +43,14 @@ const router = createRouter({
       component: ItemView
     },
     {
-      path:'/clientes',
-      name:'clientes',
-      component: ClienteView
+      path:'/socios',
+      name:'socios',
+      component: SocioView
+    },
+    {
+      path:'/dependentes',
+      name:'dependentes',
+      component: DependenteView
     },
     {
       path:'/locacoes',
