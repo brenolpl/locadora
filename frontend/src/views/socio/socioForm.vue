@@ -16,8 +16,8 @@
                         <label for="inscricao" class="form-label">N° Inscrição</label>
                     </div>
                     <div class="form-floating mb-3 col-xl-5">
-                        <input type="datetime-local" name="nascimento" id="nascimento" class="form-control" v-model="entity.date" placeholder="xx/xx/xxxx" required>
-                        <label for="nome" class="form-label">Data de Nascimento</label>
+                        <input type="date" name="nascimento" id="nascimento" class="form-control" v-model="entity.date" placeholder="xx/xx/xxxx" required>
+                        <label for="nome" class="form-label">Nascimento</label>
                     </div>
                     <div class="mb-3 col-xl-5">
                         <div class="form-check">
@@ -33,6 +33,30 @@
                             </label>
                         </div>
                     </div>
+
+                    <div class="mb-5 col-sm-12">
+                        <fieldset id="socioInformation" class="d-none col-sm-12 d-flex flex-wrap gap-3">
+                            <legend class="small">Preencha também estas informações</legend>
+                            <div class="col-md-5 form-floating mb-3">
+                                <input type="text" name="cpf" id="cpf" class="form-control" v-model="entity.cpf" placeholder="cpf" >
+                                <label for="cpf" class="form-label">CPF</label>
+                            </div>
+
+                            <div class="col-md-5 form-floating mb-3">
+                                <input type="tel" name="telefone" id="telefone" class="form-control" v-model="entity.telefone" placeholder="telefone" >
+                                <label for="telefone" class="form-label">Telefone</label>
+                            </div>
+
+                            <div class="col-sm-12 form-floating mb-3">
+                                <input type="text" name="endereco" id="endereco" class="form-control" v-model="entity.endereco" placeholder="endereco" >
+                                <label for="endereco" class="form-label">Endereço</label>
+                            </div>
+
+
+                        </fieldset>
+
+                    </div>
+
                 </modal-body>
                 <modal-footer>
                     <button class="btn btn-outline-danger" type="button" @click="closeModal">Cancelar</button>
@@ -44,49 +68,41 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, watch } from 'vue';
-
+import { defineComponent, ref, watch } from 'vue'
 import useRequests from '@/composables/requests';
 import Swal from 'sweetalert2';
-import Cliente from '@/models/cliente';
+import Socio from '@/models/socio';
+
 export default defineComponent({
-    name: "ClienteForm",
-    props: {
-        open: {
-            type: Boolean,
-            required: true
+    name:'SocioForm',
+    props:{
+        open:{
+            type:Boolean,
+            required:true
         },
-        editedId: {
-            type: Number,
-            default: 0
+        editedId:{
+            type:Number,
+            default:0
         }
     },
-    emits: ["saved", "close"],
-    setup(props, { emit }) {
+    emits:['saved', 'close'],
+    setup(props,{emit}) {
 
-        const { erros, save, getById, entity, resetEntity } = useRequests(Cliente);
+        const { erros, save, getById, entity, resetEntity } = useRequests(Socio);
 
-        const classificacao = ref();
+        const isOpen = ref(false);
 
-        const openModalAtor = ref(false);
-
+        const formSave = async () => {
+            await save(entity.value);
+            emit('saved');
+        }
+        
         const closeModal = () =>{
             resetEntity();
             emit('close');
         }
 
-        const formSave = async () => {
-            await save(entity.value);
-            Swal.fire({
-                icon: 'success',
-                title: 'Titulo adicionado com sucesso!',
-                showConfirmButton: false,
-                timer: 1500
-            })
-            emit("saved");
-        };
-
-        watch(() => props.editedId, (newVal) => {
+        watch(()=>props.editedId, (newVal) => {
             if(newVal != 0) getById(newVal);
         });
 
@@ -94,10 +110,9 @@ export default defineComponent({
             entity,
             erros,
             formSave,
-            classificacao,
-            openModalAtor,
+            isOpen,
             closeModal
-        };
+        }   
     },
 })
 </script>

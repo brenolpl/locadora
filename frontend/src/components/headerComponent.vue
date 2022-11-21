@@ -22,12 +22,20 @@
 
         <a href="javascript:;" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" class="p-5 fs-1 text-white position-absolute top-0 end-0 d-lg-none">&times;</a>
         
-        <router-link to="/ator" class="nav-link active">Ator</router-link>
-        <router-link to="/classes" class="nav-link active">Classes</router-link>
-        <router-link to="/diretor" class="nav-link active">Diretores</router-link>
-        <router-link to="/titulos" class="nav-link active">Títulos</router-link>
-        <router-link to="/itens" class="nav-link active">Itens</router-link>
-        <router-link to="/clientes" class="nav-link active">Clientes</router-link>
+        <router-link to="/ator" id="ator-link" class="nav-link">Ator</router-link>
+        <router-link to="/classes" id="classe-link" class="nav-link">Classes</router-link>
+        <router-link to="/diretor" id="diretor-link" class="nav-link">Diretores</router-link>
+        <router-link to="/titulos" id="titulos-link" class="nav-link">Títulos</router-link>
+        <router-link to="/itens" id="itens-link" class="nav-link">Itens</router-link>
+        <app-dropdown :title="'Clientes'">
+            <dropdown-item>
+                <router-link to="/socios" id="socios-link" class="nav-link">Sócios</router-link>
+            </dropdown-item>
+            <dropdown-item>
+                <router-link to="/dependentes" id="dependentes-link" class="nav-link">Dependentes</router-link>
+            </dropdown-item>
+        </app-dropdown>
+        <router-link to="/locacoes" id="locacoes-link" class="nav-link">Locações</router-link>
 
         </div>
 
@@ -43,12 +51,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive } from 'vue'
-// import AppDropdown from './dropdown/dropdownComponent.vue';
+import { defineComponent } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 export default defineComponent({
     name:"AppHeader",
-    // components:{ AppDropdown },
     setup() {
+
+        const router = useRouter()
+        const route = useRoute();
+
         return {}
     },
 })

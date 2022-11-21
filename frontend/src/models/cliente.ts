@@ -5,17 +5,15 @@ export default class Cliente extends Flex{
     nome:string;
     date: Date;
     sexo:string;
-    dependentes:Array<Cliente>;
-    isAtivo:boolean
+    ativo:boolean
 
-    constructor() {
-        super("/cliente/");
+    constructor(path = "/cliente/") {
+        super(path);
         this.numInscricao = 0,
         this.nome = "",
         this.date = new Date();
         this.sexo = "";
-        this.dependentes = new Array<Cliente>();
-        this.isAtivo = true;
+        this.ativo = true;
     }
 
 }
