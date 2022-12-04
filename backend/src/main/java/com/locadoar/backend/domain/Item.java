@@ -1,5 +1,7 @@
 package com.locadoar.backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,10 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "item")
@@ -34,6 +38,10 @@ public class Item implements Serializable {
     @ManyToOne
     @JoinColumn(name = "ID_TITULO")
     private Titulo titulo;
+
+    @JsonIgnoreProperties
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    private Set<Locacao> locacaoSet;
 
     public Integer getId() {
         return id;
@@ -73,5 +81,13 @@ public class Item implements Serializable {
 
     public void setTitulo(Titulo titulo) {
         this.titulo = titulo;
+    }
+
+    public Set<Locacao> getLocacaoSet() {
+        return locacaoSet;
+    }
+
+    public void setLocacaoSet(Set<Locacao> locacaoSet) {
+        this.locacaoSet = locacaoSet;
     }
 }
