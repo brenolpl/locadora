@@ -22,7 +22,7 @@ public class Item implements Serializable {
     @Column(name = "ID_ITEM")
     private Integer id;
 
-    @Column(name = "numero_serie")
+    @Column(name = "numero_serie", unique = true)
     private String numeroSerie;
 
     @Column(name = "DT_AQUISICAO")

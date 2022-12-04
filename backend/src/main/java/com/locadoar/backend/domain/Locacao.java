@@ -1,9 +1,11 @@
 package com.locadoar.backend.domain;
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -49,7 +51,7 @@ public class Locacao implements Serializable {
     @JoinColumn(name = "ID_CLIENTE")
     private Cliente cliente;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_ITEM", nullable = false)
     @NotNull
     private Item item;
