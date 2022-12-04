@@ -12,7 +12,8 @@ export default function useRequests<T extends Flex>(type: { new(): T ;}){
     const path = entity.value.path;
 
     const getAll = async () => {
-        const response = await api.get(path + "list")
+        const endpoint = path === "/cliente/" || path === "/socio/" || path === "/dependente/" ? "listarAtivos" : "list";
+        const response = await api.get(path + endpoint);
         entities.value = response.data;
     }
 
@@ -30,11 +31,9 @@ export default function useRequests<T extends Flex>(type: { new(): T ;}){
     }
 
     const resetEntity = () => {
-        entity.value = new type();
-        console.log("🚀 ~ file: requests.ts ~ line 34 ~ resetEntity ~ entity.value", entity.value)    }
+        entity.value = new type() }
 
     const save = async (data:any) => {
-        console.log("🚀 ~ file: requests.ts ~ line 37 ~ save ~ data:any", data)
         erros.value = '';
         try{
             await api.post(path + "save", data);

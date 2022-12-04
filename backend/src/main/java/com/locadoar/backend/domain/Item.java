@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "item")
@@ -25,7 +26,7 @@ public class Item implements Serializable {
     private String numeroSerie;
 
     @Column(name = "DT_AQUISICAO")
-    private Timestamp dataAquisicao;
+    private LocalDateTime dataAquisicao;
 
     @Column(name = "tipo_item")
     private String tipoItem;
@@ -50,11 +51,11 @@ public class Item implements Serializable {
         this.numeroSerie = numeroSerie;
     }
 
-    public Timestamp getDataAquisicao() {
+    public LocalDateTime getDataAquisicao() {
         return dataAquisicao;
     }
 
-    public void setDataAquisicao(Timestamp dataAquisicao) {
+    public void setDataAquisicao(LocalDateTime dataAquisicao) {
         this.dataAquisicao = dataAquisicao;
     }
 

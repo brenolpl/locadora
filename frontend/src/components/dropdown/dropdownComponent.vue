@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, toRef, provide } from 'vue';
+import { defineComponent, ref, provide, onMounted } from 'vue';
 
 export default defineComponent({
     name:"AppDropdown",
@@ -28,10 +28,21 @@ export default defineComponent({
         }
     },
     setup(props) {
+
+        
         const isOpen = ref(false);
+
         const toogle = () =>{ isOpen.value = !isOpen.value;}
-        provide('olaMundo', 'Ola mundo');
-        return { toogle, isOpen }
+
+        provide("dropdown", { toogle });
+
+        const dropdown = ref(null)
+
+        const clickOutListener = (evt:any) => { if(!dropdown.value?.contains(evt.target)) isOpen.value = false };
+
+        onMounted(()=>{ document.addEventListener("click", clickOutListener) });
+
+        return { toogle, isOpen, dropdown }
     },
 })
 </script>

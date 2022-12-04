@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "LOCACAO")
@@ -26,14 +27,14 @@ public class Locacao implements Serializable {
 
     @NotNull
     @Column(name = "DT_LOCACAO")
-    private Timestamp dtLocacao;
+    private LocalDateTime dtLocacao;
 
     @NotNull
     @Column(name = "DT_DEVOLUCAO_PREVISTA")
-    private Timestamp dtDevolucaoPrevista;
+    private LocalDateTime dtDevolucaoPrevista;
 
     @Column(name = "DT_DEVOLUCAO_EFETIVA")
-    private Timestamp dtDevolucaoEfetiva;
+    private LocalDateTime dtDevolucaoEfetiva;
 
     @NotNull
     @Column(name = "VALOR_COBRADO")
@@ -61,27 +62,27 @@ public class Locacao implements Serializable {
         this.id = id;
     }
 
-    public Timestamp getDtLocacao() {
+    public LocalDateTime getDtLocacao() {
         return dtLocacao;
     }
 
-    public void setDtLocacao(Timestamp dtLocacao) {
+    public void setDtLocacao(LocalDateTime dtLocacao) {
         this.dtLocacao = dtLocacao;
     }
 
-    public Timestamp getDtDevolucaoPrevista() {
+    public LocalDateTime getDtDevolucaoPrevista() {
         return dtDevolucaoPrevista;
     }
 
-    public void setDtDevolucaoPrevista(Timestamp dtDevolucaoPrevista) {
+    public void setDtDevolucaoPrevista(LocalDateTime dtDevolucaoPrevista) {
         this.dtDevolucaoPrevista = dtDevolucaoPrevista;
     }
 
-    public Timestamp getDtDevolucaoEfetiva() {
+    public LocalDateTime getDtDevolucaoEfetiva() {
         return dtDevolucaoEfetiva;
     }
 
-    public void setDtDevolucaoEfetiva(Timestamp dtDevolucaoEfetiva) {
+    public void setDtDevolucaoEfetiva(LocalDateTime dtDevolucaoEfetiva) {
         this.dtDevolucaoEfetiva = dtDevolucaoEfetiva;
     }
 

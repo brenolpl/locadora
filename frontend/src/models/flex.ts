@@ -4,6 +4,6 @@ export default abstract class Flex{
 
     constructor(path:string){
         this.path = path;
-        this.id = 0;
+        this.id = null;
     }
 }
