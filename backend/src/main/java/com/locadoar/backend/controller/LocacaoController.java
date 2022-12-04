@@ -2,6 +2,7 @@ package com.locadoar.backend.controller;
 
 import com.locadoar.backend.domain.Locacao;
 import com.locadoar.backend.persistence.repository.ILocacaoRepository;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,4 +12,6 @@ public class LocacaoController extends BaseController<Locacao, ILocacaoRepositor
     public LocacaoController(ILocacaoRepository repository) {
         super(Locacao.class, repository);
     }
+
+
 }
