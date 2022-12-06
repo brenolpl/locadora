@@ -72,7 +72,10 @@ export default defineComponent({
     color: var(--flex-dark)}
 
     #menu .nav-link:hover,
-    #menu .nav-link.active { opacity: 1 }
+    #menu .router-link-active {
+        opacity: 1;
+        font-weight: 400;
+    }
 
     .navbar-toggler { 
     border: 0;

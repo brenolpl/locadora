@@ -5,7 +5,7 @@ import Flex from "./flex";
 export default class Locacao extends Flex{
     dtLocacao: Date;
     dtDevolucaoPrevista: Date;
-    dtDevolucaoEfetiva:Date;
+    dtDevolucaoEfetiva:Date|null;
     valorCobrado:number;
     multaCobrada: number;
     cliente: Cliente;
@@ -15,7 +15,7 @@ export default class Locacao extends Flex{
         super("/locacao/");
         this.dtLocacao = new Date();
         this.dtDevolucaoPrevista = new Date();
-        this.dtDevolucaoEfetiva = new Date();
+        this.dtDevolucaoEfetiva = null;
         this.valorCobrado = 0.0;
         this.multaCobrada = 0.0;
         this.cliente = new Cliente();

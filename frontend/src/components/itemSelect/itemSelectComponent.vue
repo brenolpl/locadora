@@ -1,7 +1,7 @@
 <template>
     <select class="form-select" aria-label="Selecione um item" @change="onChange" id="selectItem">
         <option disabled selected>Selecione um Item</option>
-        <option v-for="(item, i) in entities" :key="i" :value="item.id">{{item.titulo?.nome}}</option>
+        <option v-for="(item, i) in entities" :key="i" :value="item.id">{{item?.numeroSerie}} - {{item.titulo?.nome}}</option>
     </select>
 </template>
 

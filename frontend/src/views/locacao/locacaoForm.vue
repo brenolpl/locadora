@@ -59,6 +59,7 @@ import {defineComponent, provide, ref, watch } from 'vue';
 import useRequests from '@/composables/requests';
 import Swal from 'sweetalert2';
 import Locacao from '@/models/locacao';
+import Item from '@/models/Item';
 import ItemSelect from '../../components/itemSelect/itemSelectComponent.vue'
 import ClientSelect from '../../components/clienteSelect/clienteSelectComponent.vue'
 export default defineComponent({
@@ -78,6 +79,8 @@ export default defineComponent({
     setup(props, { emit }) {
 
         const { erros, save, getById, entity, resetEntity } = useRequests(Locacao);
+
+        const itemSelect = useRequests(Item);
 
         const formSave = async () => {
             await save(entity.value);
@@ -99,8 +102,24 @@ export default defineComponent({
             emit('close');
         }
 
-        const addItem = (item:any) => {
-            entity.value.item = item;
+
+        const addItem = (idItem:any) => {
+            entity.value.item = idItem;
+            itemSelect.getById(idItem.id);
+            let prazoDevolucao = 0;
+            const inputDtPrevista = document.getElementById("dtDevolucaoPrevista");
+
+            watch(() => itemSelect.entity.value, (item) => {
+                prazoDevolucao = item?.titulo?.classificacao.prazoDevolucao;
+
+                const currentDate = new Date();
+                let dtDevolucaoPrevista:any = new Date(currentDate.setDate(currentDate.getDate() + prazoDevolucao));
+                dtDevolucaoPrevista = dtDevolucaoPrevista.toISOString().slice(0,16);
+                console.log("🚀 ~ file: locacaoForm.vue ~ line 123 ~ watch ~ dtDevolucaoPrevista", dtDevolucaoPrevista)
+
+                entity.value.dtDevolucaoPrevista = dtDevolucaoPrevista;
+
+            });
         }
 
         const addCliente = (cliente:any) => {

@@ -1,6 +1,6 @@
 export default abstract class Flex{
     path:string;
-    id:number;
+    id:number|null;
 
     constructor(path:string){
         this.path = path;
