@@ -1,5 +1,6 @@
 package com.locadoar.backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -40,7 +41,7 @@ public class Item implements Serializable {
     @JoinColumn(name = "ID_TITULO")
     private Titulo titulo;
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
     private Set<Locacao> locacaoSet;
 
