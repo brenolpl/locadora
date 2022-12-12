@@ -1,6 +1,7 @@
 package com.locadoar.backend.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,7 +40,7 @@ public class Item implements Serializable {
     @JoinColumn(name = "ID_TITULO")
     private Titulo titulo;
 
-    @JsonIgnoreProperties
+    @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
     private Set<Locacao> locacaoSet;
 
