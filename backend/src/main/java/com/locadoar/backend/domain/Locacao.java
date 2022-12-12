@@ -1,6 +1,7 @@
 package com.locadoar.backend.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.Fetch;
 
@@ -52,7 +53,7 @@ public class Locacao implements Serializable {
     @JoinColumn(name = "ID_CLIENTE")
     private Cliente cliente;
 
-    @JsonBackReference
+    @JsonManagedReference
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_ITEM", nullable = false)
     @NotNull
